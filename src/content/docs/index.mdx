@@ -21,30 +21,159 @@ hero:
       variant: primary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
-
 ## What this project is
 
 The 99 Humanity Fund is a long-form documentary project that proposes a global economic institution owned equally by every human being — and walks through, honestly and in detail, what it would take to build it.
 
 The case is structural rather than aspirational. Across seven parts, the series examines what the institution would own, how it would compete with concentrated private capital, how it would govern itself, how it would resist capture, and what its first decade could realistically look like.
 
-## The series
+<style>
+{`
+  .series-section { max-width: 60rem; margin: 3.5rem auto 4rem; }
+  .series-heading {
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 1.9rem; font-weight: 600;
+    color: var(--sl-color-white); text-align: center;
+    margin-bottom: 2.25rem;
+  }
+  .series-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+  }
+  @media (max-width: 44rem) {
+    .series-grid { grid-template-columns: 1fr; }
+  }
+  .pcard {
+    display: flex; flex-direction: column;
+    text-decoration: none;
+    border: 1px solid var(--sl-color-hairline-light);
+    border-radius: 10px; overflow: hidden;
+    background: var(--sl-color-black);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .pcard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+    border-color: var(--sl-color-accent);
+  }
+  .pcard-img {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--sl-color-gray-6), var(--sl-color-gray-5));
+    background-size: cover; background-position: center;
+  }
+  .pcard-num {
+    position: absolute; top: 0.6rem; right: 0.85rem;
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    letter-spacing: 0.02em;
+  }
+  .pcard-soon {
+    position: absolute; top: 0.7rem; left: 0.85rem;
+    font-family: var(--sl-font); font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #fff; background: rgba(0,0,0,0.55);
+    border-radius: 999px; padding: 0.15rem 0.55rem;
+  }
+  .pcard-body { padding: 1rem 1.1rem 1.25rem; }
+  .pcard-title {
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 1.25rem; font-weight: 600; line-height: 1.25;
+    color: var(--sl-color-white); margin: 0 0 0.4rem;
+  }
+  .pcard:hover .pcard-title { color: var(--sl-color-accent); }
+  .pcard-desc {
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 0.92rem; line-height: 1.5;
+    color: var(--sl-color-gray-2); margin: 0;
+  }
+`}
+</style>
 
-<CardGrid>
-	<Card title="Part 1 — The Foundation">
-		The original case for a citizen-owned global fund: why it should exist, what it would own, and the dividend mathematics that make it possible.
-	</Card>
-	<Card title="Part 2 — The Fund as Institution">
-		Eight sub-articles addressing how the fund actually works as a real institution — what it is, what it owns, how it competes, how money flows, how it gets built, what stops it from being corrupted, and what the first decade could look like.
-	</Card>
-	<Card title="Part 3 — Manufacturing Redistribution">
-		A quantitative analysis across 193 countries and 20 product categories, showing how the fund could redistribute manufacturing employment globally without disrupting the regions that currently host it.
-	</Card>
-	<Card title="Parts 4 through 7">
-		In development. Future parts will cover pricing and wages, services and the half-shift economy, the transition path, and the strongest critiques of the proposal.
-	</Card>
-</CardGrid>
+<div class="series-section">
+
+<h2 class="series-heading">The New World Order Series</h2>
+
+<div class="series-grid">
+
+  <a class="pcard" href="/part-1/">
+    <div class="pcard-img" style="background-image: url('/cards/part-1.jpg')">
+      <span class="pcard-num">Part 1</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">A New World Order</p>
+      <p class="pcard-desc">Why neither economic extreme has worked, and the case for a global fund with equal shares for every human being. Nine articles.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-2/">
+    <div class="pcard-img" style="background-image: url('/cards/part-2.jpg')">
+      <span class="pcard-num">Part 2</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">The Fund as Institution</p>
+      <p class="pcard-desc">How the fund works as a real institution — what it is, what it owns, how it competes, and how it stays uncorrupted. Eight articles.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-3/">
+    <div class="pcard-img" style="background-image: url('/cards/part-3.jpg')">
+      <span class="pcard-num">Part 3</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">Manufacturing Redistribution</p>
+      <p class="pcard-desc">A quantitative analysis across 194 countries and 20 product categories, and how the fund could redistribute them. Four articles.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-4/">
+    <div class="pcard-img" style="background-image: url('/cards/part-4.jpg')">
+      <span class="pcard-num">Part 4</span>
+      <span class="pcard-soon">In development</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">Pricing &amp; Consumer Welfare</p>
+      <p class="pcard-desc">How prices and purchasing power behave under the fund — a detailed welfare analysis.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-5/">
+    <div class="pcard-img" style="background-image: url('/cards/part-5.jpg')">
+      <span class="pcard-num">Part 5</span>
+      <span class="pcard-soon">In development</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">Services &amp; the Half-Shift Economy</p>
+      <p class="pcard-desc">Service-sector redistribution and a reorganization of working hours under the fund.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-6/">
+    <div class="pcard-img" style="background-image: url('/cards/part-6.jpg')">
+      <span class="pcard-num">Part 6</span>
+      <span class="pcard-soon">In development</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">The Political Transition Path</p>
+      <p class="pcard-desc">Treaties, coalitions, and the resistance the fund would face on the road to adoption.</p>
+    </div>
+  </a>
+
+  <a class="pcard" href="/part-7/">
+    <div class="pcard-img" style="background-image: url('/cards/part-7.jpg')">
+      <span class="pcard-num">Part 7</span>
+      <span class="pcard-soon">In development</span>
+    </div>
+    <div class="pcard-body">
+      <p class="pcard-title">Critiques &amp; Failure Modes</p>
+      <p class="pcard-desc">The strongest critiques of the proposal, engaged head-on, and the ways the fund could fail.</p>
+    </div>
+  </a>
+
+</div>
+</div>
 
 ## How to read
 
