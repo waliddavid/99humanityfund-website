@@ -18,7 +18,6 @@ export default defineConfig({
 					lang: 'en',
 				},
 			},
-			social: [],
 			sidebar: [
 				{
 					label: 'Introduction',
