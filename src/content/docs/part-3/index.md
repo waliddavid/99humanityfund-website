@@ -1,12 +1,13 @@
 ---
 title: Part 3 — Manufacturing Redistribution
-description: A quantitative analysis of how the fund could redistribute manufacturing employment globally.
+description: Rearranging manufacturing labour around the world so the fund can build its companies where they make a meaningful impact.
 ---
 
-This is the placeholder page for Part 3. The Part 3 analysis will be published here.
+In Part 3 we dive into rearranging manufacturing labour around the world, so the fund can build its companies in places where they make a meaningful impact.
 
-Part 3 examines, across 193 countries and 20 product categories, how the fund could redistribute manufacturing employment globally without disrupting the regions that currently host it. The analysis is grounded in trade flow data, employment statistics, and capability assessments.
+## Articles in this Part
 
----
-
-*This is a placeholder. Content publishing begins after the site foundation is verified.*
+1. [Where Should Factories Be?](/part-3/where-should-factories-be/)
+2. [Manufacturing Redistribution Methodology](/part-3/methodology/)
+3. [Five Scenario Comparison — Country Level](/part-3/five-scenario-comparison/)
+4. [Phased Implementation — Country Summary](/part-3/phased-implementation/)
