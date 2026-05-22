@@ -1,0 +1,54 @@
+/* ============================================================
+   Sub-article reading styles — 99 Humanity Fund
+   Used on splash-template articles to give a full-screen page
+   but a COMFORTABLE reading measure (splash is too wide raw).
+   Import this from each sub-article's frontmatter area.
+   ============================================================ */
+
+/* Constrain the reading column to a comfortable measure.
+   ~38rem ≈ 65-75 characters per line, the readability sweet spot.
+   Widen this number if you prefer a wider column. */
+.reading {
+  max-width: 38rem;
+  margin: 0 auto;
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 1.12rem;
+  line-height: 1.78;
+}
+
+.reading h2,
+.reading h3 {
+  font-family: Georgia, 'Source Serif 4', serif;
+  line-height: 1.25;
+  margin-top: 2.2rem;
+}
+
+.reading p {
+  margin: 1.1rem 0;
+}
+
+/* "Back to Part" link, sits above the reading column */
+.back-to-part {
+  display: inline-block;
+  max-width: 38rem;
+  margin: 0 auto 1.5rem;
+  font-family: var(--sl-font); /* Inter / sans */
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--sl-color-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-to-part:hover {
+  text-decoration: underline;
+}
+
+/* Center the back link over the centered reading column */
+.sl-markdown-content > .back-to-part {
+  display: block;
+  text-align: left;
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
+}
