@@ -226,19 +226,24 @@ img.hero-banner {
 	border-radius: 0 !important;
 }
 
-/* (2) Overlay now covers the WHOLE image (top to bottom), darker at
-   top-left for text legibility, fading across the whole picture. */
+/* (2) Overlay covers the WHOLE image (top to bottom), darker at the
+   top where the text sits, fading down. Pinned hard to the top edge so
+   there is no lighter strip at the top. */
 .hero-overlay {
 	position: absolute;
-	inset: 0;               /* top:0 right:0 bottom:0 left:0 — full image */
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	padding: clamp(1.25rem, 4vw, 3rem);
 	line-height: 1.2;
 	background: linear-gradient(
-		150deg,
-		rgba(0, 0, 0, 0.60) 0%,
-		rgba(0, 0, 0, 0.35) 30%,
-		rgba(0, 0, 0, 0.15) 60%,
-		rgba(0, 0, 0, 0.10) 100%
+		180deg,
+		rgba(0, 0, 0, 0.55) 0%,
+		rgba(0, 0, 0, 0.45) 12%,
+		rgba(0, 0, 0, 0.28) 35%,
+		rgba(0, 0, 0, 0.12) 65%,
+		rgba(0, 0, 0, 0.08) 100%
 	);
 }
 
@@ -283,6 +288,8 @@ header .header {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	border-bottom: none !important;   /* remove the divider line under the header */
+	box-shadow: none !important;      /* some themes use a shadow instead of a border */
 }
 
 header .header .title-wrapper {
