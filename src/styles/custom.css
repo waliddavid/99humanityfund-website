@@ -268,7 +268,7 @@ main .sl-markdown-content {
 .hero-banner {
   display: block;
   width: calc(100vw - 3rem);   /* ~1.5rem (~1.5cm) margin each side */
-  max-width: 2100px;           /* cap on very large screens */
+  max-width: 2800px;           /* cap on very large screens */
   height: auto;                /* keep true proportions, no cropping */
 
   /* Recenter: move to viewport center regardless of parent width. */
