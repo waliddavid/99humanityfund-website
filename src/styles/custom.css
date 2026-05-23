@@ -1,4 +1,4 @@
-/* 
+/*
  * 99 Humanity Fund — custom theme
  * Aeon-inspired editorial typography with restraint and dignity
  */
@@ -11,7 +11,7 @@
 	--sl-color-accent-low: #e8e1d5;
 	--sl-color-accent: #6b5d3e;
 	--sl-color-accent-high: #4a3f29;
-	
+
 	--sl-color-white: #fdfcf9;
 	--sl-color-gray-1: #f7f5f0;
 	--sl-color-gray-2: #ebe7dd;
@@ -21,17 +21,17 @@
 	--sl-color-gray-6: #2c2820;
 	--sl-color-gray-7: #1a1812;
 	--sl-color-black: #0f0e0a;
-	
+
 	/* Typography */
 	--sl-font: 'Source Serif 4', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
 	--sl-font-system: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--sl-font-system-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	
+
 	/* Comfortable reading sizes */
 	--sl-text-base: 1.0625rem;
 	--sl-text-sm: 0.9375rem;
 	--sl-text-xs: 0.8125rem;
-	
+
 	/* Generous line height for serif body */
 	--sl-line-height: 1.7;
 }
@@ -201,159 +201,108 @@ main .sl-markdown-content {
 	border-radius: 3px;
 }
 
-/* Hero section for the landing page */
-.hero {
-	padding: 3rem 0 4rem;
+/* ============================================================
+   HERO OVERLAY + HEADER  —  99% of Humanity Global Fund
+   ============================================================ */
+
+/* Hide Starlight's default page <h1> (the stray black title) on home. */
+.sl-markdown-content > h1:first-child {
+	display: none !important;
 }
 
-.hero h1 {
-	font-family: var(--sl-font);
-	font-weight: 600;
-	font-size: 3rem;
-	line-height: 1.1;
-	letter-spacing: -0.015em;
+/* Hero wrapper: full-width banner, ~1cm below the header. */
+.hero-wrap {
+	position: relative;
+	display: block;
+	width: calc(100vw - 3rem);
+	max-width: 2100px;
+	margin: 1rem auto 0 !important;
+	left: 50%;
+	transform: translateX(-50%);
+	border-radius: 6px;
+	overflow: hidden;
 }
 
-.hero .tagline {
+/* The image: full width of the wrapper, natural height (no crop). */
+.sl-markdown-content img.hero-banner,
+img.hero-banner {
+	display: block !important;
+	width: 100% !important;
+	max-width: 100% !important;
+	height: auto !important;
+	margin: 0 !important;
+	border-radius: 0 !important;
+}
+
+/* Text overlay, top-left, with a soft gradient for legibility. */
+.hero-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: clamp(1.25rem, 4vw, 3rem);
+	background: linear-gradient(
+		160deg,
+		rgba(0, 0, 0, 0.55) 0%,
+		rgba(0, 0, 0, 0.30) 35%,
+		rgba(0, 0, 0, 0) 70%
+	);
+}
+
+/* Title: WHITE, over the image. */
+.hero-overlay .hero-title,
+.sl-markdown-content .hero-overlay .hero-title {
 	font-family: var(--sl-font);
-	font-size: 1.375rem;
-	line-height: 1.5;
+	font-weight: 700;
+	color: #ffffff !important;
+	font-size: clamp(1.6rem, 4.5vw, 3.4rem);
+	line-height: 1.05;
+	letter-spacing: -0.01em;
+	margin: 0 0 0.6rem !important;
+	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* Tagline: white, italic, on the image. */
+.hero-overlay .hero-sub,
+.sl-markdown-content .hero-overlay .hero-sub {
+	font-family: var(--sl-font);
 	font-style: italic;
-	color: var(--sl-color-gray-4);
-	max-width: 30em;
+	color: #f3efe6 !important;
+	font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+	line-height: 1.4;
+	max-width: 32em;
+	margin: 0 !important;
+	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* Site title in header */
+/* Header layout: title left, links + search pushed to the right. */
+header .header {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+header .header .title-wrapper {
+	flex: 1 1 auto;
+}
+
+header .header nav,
+header .header .sl-nav-links {
+	margin-left: auto;
+}
+
+/* Site title in header. */
 .site-title {
 	font-family: var(--sl-font);
 	font-weight: 600;
 	letter-spacing: -0.005em;
 }
 
-/* Sidebar styling */
+/* Sidebar styling. */
 .sidebar-content {
 	font-size: var(--sl-text-sm);
 }
 
 .sidebar-content a {
 	transition: color 0.15s ease;
-}
-/* ============================================================
-   HERO OVERLAY + HEADER  —  99% of Humanity Global Fund
-   CONSOLIDATED BLOCK. This replaces EVERYTHING from the old
-   "/* Hero section for the landing page */" comment to the end
-   of the file. One coherent block, no version fragments.
-   ============================================================ */
-
-/* ---- Hide Starlight's default page <h1> (the stray black title)
-        and any divider line on the splash homepage. -------------- */
-.sl-markdown-content > h1:first-child {
-  display: none !important;
-}
-
-/* ---- The hero wrapper: full-width banner, ~1cm below the header.
-        Holds the image and the overlaid title/tagline. ---------- */
-.hero-wrap {
-  position: relative;
-  display: block;
-  width: calc(100vw - 3rem);     /* ~1.5rem (~1.5cm) margin each side */
-  max-width: 2100px;
-  margin: 1rem auto 0 !important; /* ~1cm gap under the header */
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-/* ---- The image itself: full width of the wrapper, natural height. */
-.sl-markdown-content img.hero-banner,
-img.hero-banner {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-}
-
-/* ---- The text overlay, top-left, with a soft dark gradient so the
-        white text stays readable over the bright sky. ------------ */
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding: clamp(1.25rem, 4vw, 3rem);
-  background: linear-gradient(
-    160deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.30) 35%,
-    rgba(0, 0, 0, 0) 70%
-  );
-}
-
-/* ---- Title: WHITE, over the image. High specificity + !important
-        beats Starlight's markdown h1 colour. ---------------------- */
-.hero-overlay .hero-title,
-.sl-markdown-content .hero-overlay .hero-title {
-  font-family: var(--sl-font);
-  font-weight: 700;
-  color: #ffffff !important;
-  font-size: clamp(1.6rem, 4.5vw, 3.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  margin: 0 0 0.6rem !important;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
-}
-
-/* ---- Tagline: white, italic, under the title, on the image. ----- */
-.hero-overlay .hero-sub,
-.sl-markdown-content .hero-overlay .hero-sub {
-  font-family: var(--sl-font);
-  font-style: italic;
-  color: #f3efe6 !important;
-  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
-  line-height: 1.4;
-  max-width: 32em;
-  margin: 0 !important;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
-}
-
-/* ============================================================
-   HEADER LAYOUT — site title left, then flexible gap, then
-   Menu + About links, then the search bar on the right.
-   NOTE: header rearrangement depends on Starlight's exact markup.
-   If links/search don't move right, inspect the header and we'll
-   adjust the selectors.
-   ============================================================ */
-header .header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Site title takes the left and grows to push the rest rightward. */
-header .header .title-wrapper {
-  flex: 1 1 auto;
-}
-
-/* Menu/About links sit just left of search, pushed to the right side. */
-header .header nav,
-header .header .sl-nav-links {
-  margin-left: auto;
-}
-
-/* Site title in header — serif, as before. */
-.site-title {
-  font-family: var(--sl-font);
-  font-weight: 600;
-  letter-spacing: -0.005em;
-}
-
-/* Sidebar styling (kept from original). */
-.sidebar-content {
-  font-size: var(--sl-text-sm);
-}
-.sidebar-content a {
-  transition: color 0.15s ease;
 }
