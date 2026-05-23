@@ -3,15 +3,12 @@
  * Aeon-inspired editorial typography with restraint and dignity
  */
 
-/* Import a serif font well-suited to long-form reading */
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-	/* Color palette — restrained, warm, editorial */
 	--sl-color-accent-low: #e8e1d5;
 	--sl-color-accent: #6b5d3e;
 	--sl-color-accent-high: #4a3f29;
-
 	--sl-color-white: #fdfcf9;
 	--sl-color-gray-1: #f7f5f0;
 	--sl-color-gray-2: #ebe7dd;
@@ -21,18 +18,12 @@
 	--sl-color-gray-6: #2c2820;
 	--sl-color-gray-7: #1a1812;
 	--sl-color-black: #0f0e0a;
-
-	/* Typography */
 	--sl-font: 'Source Serif 4', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
 	--sl-font-system: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--sl-font-system-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-
-	/* Comfortable reading sizes */
 	--sl-text-base: 1.0625rem;
 	--sl-text-sm: 0.9375rem;
 	--sl-text-xs: 0.8125rem;
-
-	/* Generous line height for serif body */
 	--sl-line-height: 1.7;
 }
 
@@ -61,7 +52,6 @@
 	--sl-color-accent-low: #2c2820;
 }
 
-/* Body text uses serif for reading comfort */
 body {
 	font-family: var(--sl-font);
 	font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "onum" 1;
@@ -69,7 +59,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar and navigation use sans-serif for clarity */
 .sidebar-content,
 .sidebar-pane,
 header.header,
@@ -78,14 +67,12 @@ header.header,
 	font-family: var(--sl-font-system);
 }
 
-/* Article content typography */
 .sl-markdown-content {
 	font-family: var(--sl-font);
 	font-size: var(--sl-text-base);
 	line-height: var(--sl-line-height);
 }
 
-/* Larger, more confident headings — but not aggressive */
 .sl-markdown-content h1 {
 	font-family: var(--sl-font);
 	font-weight: 600;
@@ -125,18 +112,15 @@ header.header,
 	margin-bottom: 0.5rem;
 }
 
-/* Paragraphs — comfortable line length and spacing */
 .sl-markdown-content p {
 	margin-bottom: 1.25rem;
 	max-width: 38em;
 }
 
-/* When paragraphs are in a single-column layout, keep readable width */
 main .sl-markdown-content {
 	max-width: none;
 }
 
-/* Links — subtle, no underline by default, underline on hover */
 .sl-markdown-content a:not(.sl-flex):not(.action) {
 	color: var(--sl-color-text-accent);
 	text-decoration: underline;
@@ -150,7 +134,6 @@ main .sl-markdown-content {
 	text-decoration-color: var(--sl-color-text-accent);
 }
 
-/* Blockquotes — restrained editorial style */
 .sl-markdown-content blockquote {
 	border-left: 2px solid var(--sl-color-hairline-shade);
 	padding-left: 1.25rem;
@@ -159,7 +142,6 @@ main .sl-markdown-content {
 	color: var(--sl-color-gray-4);
 }
 
-/* Tables — clean editorial style */
 .sl-markdown-content table {
 	font-family: var(--sl-font-system);
 	font-size: var(--sl-text-sm);
@@ -180,7 +162,6 @@ main .sl-markdown-content {
 	border-bottom: 1px solid var(--sl-color-hairline-light);
 }
 
-/* Lists */
 .sl-markdown-content ul,
 .sl-markdown-content ol {
 	padding-left: 1.5rem;
@@ -192,7 +173,6 @@ main .sl-markdown-content {
 	max-width: 38em;
 }
 
-/* Code — used sparingly, monospace */
 .sl-markdown-content code {
 	font-family: var(--sl-font-system-mono);
 	font-size: 0.875em;
@@ -205,9 +185,20 @@ main .sl-markdown-content {
    HERO OVERLAY + HEADER  —  99% of Humanity Global Fund
    ============================================================ */
 
-/* Hide Starlight's default page <h1> (the stray black title) on home. */
-.sl-markdown-content > h1:first-child {
-	display: none !important;
+/* (1) Hide Starlight's default page title. Confirmed via inspector:
+   it is <h1 id="_top">. We hide it VISUALLY (not display:none) because
+   #_top is also the "Skip to content" scroll anchor — display:none
+   would break that. This collapses it to zero height, no visible text. */
+#_top {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	clip: rect(0, 0, 0, 0) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
 }
 
 /* Hero wrapper: full-width banner, ~1cm below the header. */
@@ -221,9 +212,10 @@ main .sl-markdown-content {
 	transform: translateX(-50%);
 	border-radius: 6px;
 	overflow: hidden;
+	line-height: 0; /* removes any gap above the image */
 }
 
-/* The image: full width of the wrapper, natural height (no crop). */
+/* The image: full width, natural height (no crop). */
 .sl-markdown-content img.hero-banner,
 img.hero-banner {
 	display: block !important;
@@ -234,45 +226,56 @@ img.hero-banner {
 	border-radius: 0 !important;
 }
 
-/* Text overlay, top-left, with a soft gradient for legibility. */
+/* (2) Overlay now covers the WHOLE image (top to bottom), darker at
+   top-left for text legibility, fading across the whole picture. */
 .hero-overlay {
 	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
+	inset: 0;               /* top:0 right:0 bottom:0 left:0 — full image */
 	padding: clamp(1.25rem, 4vw, 3rem);
+	line-height: 1.2;
 	background: linear-gradient(
-		160deg,
-		rgba(0, 0, 0, 0.55) 0%,
-		rgba(0, 0, 0, 0.30) 35%,
-		rgba(0, 0, 0, 0) 70%
+		150deg,
+		rgba(0, 0, 0, 0.60) 0%,
+		rgba(0, 0, 0, 0.35) 30%,
+		rgba(0, 0, 0, 0.15) 60%,
+		rgba(0, 0, 0, 0.10) 100%
 	);
 }
 
-/* Title: WHITE, over the image. */
+/* (3) Title: WHITE, ONE LINE on desktop, shrinks on mobile. */
 .hero-overlay .hero-title,
 .sl-markdown-content .hero-overlay .hero-title {
 	font-family: var(--sl-font);
 	font-weight: 700;
 	color: #ffffff !important;
-	font-size: clamp(1.6rem, 4.5vw, 3.4rem);
-	line-height: 1.05;
+	font-size: clamp(1.4rem, 3.6vw, 3rem);
+	line-height: 1.1;
 	letter-spacing: -0.01em;
 	margin: 0 0 0.6rem !important;
+	white-space: nowrap;     /* keep on one line */
 	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
-/* Tagline: white, italic, on the image. */
+/* (3) Tagline: WHITE italic, ONE LINE on desktop, shrinks on mobile. */
 .hero-overlay .hero-sub,
 .sl-markdown-content .hero-overlay .hero-sub {
 	font-family: var(--sl-font);
 	font-style: italic;
 	color: #f3efe6 !important;
-	font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+	font-size: clamp(0.8rem, 1.5vw, 1.25rem);
 	line-height: 1.4;
-	max-width: 32em;
+	max-width: none;         /* allow full width, no wrap box */
 	margin: 0 !important;
+	white-space: nowrap;     /* keep on one line */
 	text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* On small screens, allow wrapping so nothing overflows the image. */
+@media (max-width: 34rem) {
+	.hero-overlay .hero-title,
+	.hero-overlay .hero-sub {
+		white-space: normal;
+	}
 }
 
 /* Header layout: title left, links + search pushed to the right. */
@@ -291,14 +294,12 @@ header .header .sl-nav-links {
 	margin-left: auto;
 }
 
-/* Site title in header. */
 .site-title {
 	font-family: var(--sl-font);
 	font-weight: 600;
 	letter-spacing: -0.005em;
 }
 
-/* Sidebar styling. */
 .sidebar-content {
 	font-size: var(--sl-text-sm);
 }
