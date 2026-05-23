@@ -239,66 +239,121 @@ main .sl-markdown-content {
 	transition: color 0.15s ease;
 }
 /* ============================================================
-   HOMEPAGE + HEADER POLISH â€” 99% of Humanity Global Fund  (v7)
-   Append AFTER the hero-overlay (v6) block in custom.css.
+   HERO OVERLAY + HEADER  —  99% of Humanity Global Fund
+   CONSOLIDATED BLOCK. This replaces EVERYTHING from the old
+   "/* Hero section for the landing page */" comment to the end
+   of the file. One coherent block, no version fragments.
    ============================================================ */
 
-/* (1) Force the hero overlay title WHITE. Starlight's markdown h1 rule
-   was overriding it â€” higher specificity + !important wins. */
+/* ---- Hide Starlight's default page <h1> (the stray black title)
+        and any divider line on the splash homepage. -------------- */
+.sl-markdown-content > h1:first-child {
+  display: none !important;
+}
+
+/* ---- The hero wrapper: full-width banner, ~1cm below the header.
+        Holds the image and the overlaid title/tagline. ---------- */
+.hero-wrap {
+  position: relative;
+  display: block;
+  width: calc(100vw - 3rem);     /* ~1.5rem (~1.5cm) margin each side */
+  max-width: 2100px;
+  margin: 1rem auto 0 !important; /* ~1cm gap under the header */
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ---- The image itself: full width of the wrapper, natural height. */
+.sl-markdown-content img.hero-banner,
+img.hero-banner {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* ---- The text overlay, top-left, with a soft dark gradient so the
+        white text stays readable over the bright sky. ------------ */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  background: linear-gradient(
+    160deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.30) 35%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+/* ---- Title: WHITE, over the image. High specificity + !important
+        beats Starlight's markdown h1 colour. ---------------------- */
 .hero-overlay .hero-title,
 .sl-markdown-content .hero-overlay .hero-title {
+  font-family: var(--sl-font);
+  font-weight: 700;
   color: #ffffff !important;
+  font-size: clamp(1.6rem, 4.5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.6rem !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
 }
 
-/* (2)+(3) Hide the leftover Starlight page title (the stray "99 Humanity
-   Fund" heading above the image) and its divider line on the HOME page.
-   Starlight renders the frontmatter `title` as an <h1> in the content
-   header on splash pages; we don't want it since our title is on the image. */
-.sl-markdown-content > h1:first-child {
-  display: none;
-}
-/* The content header / hero area divider line under the title region. */
-.hero + *,
-.content-panel + .content-panel {
-  border-top: none !important;
-}
-
-/* (4) Tighten the gap so the hero image sits ~1cm below the header. */
-.hero-wrap {
-  margin-top: 1rem !important;   /* ~1cm below the header */
-}
-.sl-markdown-content {
-  padding-top: 0 !important;
+/* ---- Tagline: white, italic, under the title, on the image. ----- */
+.hero-overlay .hero-sub,
+.sl-markdown-content .hero-overlay .hero-sub {
+  font-family: var(--sl-font);
+  font-style: italic;
+  color: #f3efe6 !important;
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  line-height: 1.4;
+  max-width: 32em;
+  margin: 0 !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
 /* ============================================================
-   (5) HEADER LAYOUT â€” site title left, then a flexible gap,
-   then Menu + About links, then the search bar on the right.
-   This rearranges Starlight's header flex row.
+   HEADER LAYOUT — site title left, then flexible gap, then
+   Menu + About links, then the search bar on the right.
+   NOTE: header rearrangement depends on Starlight's exact markup.
+   If links/search don't move right, inspect the header and we'll
+   adjust the selectors.
    ============================================================ */
-
-/* The header is a flex row. Push everything after the title to the right
-   by making the title's container grow. */
 header .header {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Site title stays far left and takes available space, pushing the rest right. */
+/* Site title takes the left and grows to push the rest rightward. */
 header .header .title-wrapper {
   flex: 1 1 auto;
 }
 
-/* The nav links (Menu / About) sit just left of the search, not far left. */
+/* Menu/About links sit just left of search, pushed to the right side. */
 header .header nav,
 header .header .sl-nav-links {
-  order: 2;
-  margin-left: auto;   /* shove the links + search group to the right */
+  margin-left: auto;
 }
 
-/* Search sits to the right of the links. */
-header .header site-search,
-header .header .search {
-  order: 3;
+/* Site title in header — serif, as before. */
+.site-title {
+  font-family: var(--sl-font);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* Sidebar styling (kept from original). */
+.sidebar-content {
+  font-size: var(--sl-text-sm);
+}
+.sidebar-content a {
+  transition: color 0.15s ease;
 }
