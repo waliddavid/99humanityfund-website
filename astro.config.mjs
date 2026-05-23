@@ -1,13 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightUtils from '@lorenzo_lewis/starlight-utils';
 
 export default defineConfig({
 	site: 'https://99humanityfund.com',
 	integrations: [
 		starlight({
-			title: '99 Humanity Fund',
-			description: 'A documentary project on collective economic ownership and the global majority.',
+			title: '99% of Humanity Global Fund',
+			description: 'A documentary essay on collective economic ownership in capitalist economies.',
 			customCss: [
 				'./src/styles/custom.css',
 			],
@@ -23,7 +24,26 @@ export default defineConfig({
 					lang: 'en', // required for root locales
 				},
 			},
+			plugins: [
+				// starlight-utils: lifts the "leadingNavLinks" sidebar entry below
+				// up into the header nav bar (next to the site title). The fake
+				// sidebar entry itself is removed from the normal sidebar automatically.
+				starlightUtils({
+					navLinks: {
+						leading: { useSidebarLabelled: 'leadingNavLinks' },
+					},
+				}),
+			],
 			sidebar: [
+				{
+					// This entry is NOT shown in the sidebar — the plugin pulls it
+					// into the header nav. These are the Menu + About header links.
+					label: 'leadingNavLinks',
+					items: [
+						{ label: 'Menu', link: '/menu/' },
+						{ label: 'About', link: '/about/' },
+					],
+				},
 				{
 					label: 'Introduction',
 					link: '/',
