@@ -239,16 +239,15 @@ main .sl-markdown-content {
 	transition: color 0.15s ease;
 }
 /* ============================================================
-   HERO BANNER — 99 Humanity Fund  (v3 — proportional, centered)
+   HERO BANNER — 99 Humanity Fund  (v4 — viewport-width, no scroll)
    Append to END of src/styles/custom.css.
-   REMOVE the earlier v1/v2 hero blocks first — this replaces them.
+   REMOVE the earlier v1/v2/v3 hero blocks first — this replaces them.
 
-   Shows the hero image WHOLE (natural proportions, never cropped),
-   sized to ~96% of screen width (a little margin each side), centered,
-   with NO horizontal scroll.
+   The image is sized against the VIEWPORT (not Starlight's narrower
+   .sl-container), so it spans nearly the full screen width with a small
+   margin each side. Natural proportions kept (no crop). No sideways scroll.
    ============================================================ */
 
-/* Stack hero contents centered: title, tagline, buttons. */
 .hero {
   display: flex;
   flex-direction: column;
@@ -262,18 +261,25 @@ main .sl-markdown-content {
   display: none !important;
 }
 
-/* The banner image we add in the page body. Centered, almost full width,
-   natural aspect ratio preserved (height auto = no cropping). */
+/* The banner image (added in the page body as <img class="hero-banner">).
+   Key trick: width is based on 100vw (the whole viewport) minus a margin,
+   and we recenter it relative to its narrow parent using a transform.
+   This escapes the .sl-container max-width WITHOUT the scroll bug. */
 .hero-banner {
   display: block;
-  width: 100%;          /* leaves a little space on each side */
-  max-width: 2100px;   /* don't get absurdly huge on ultra-wide screens */
-  height: auto;        /* keep the image's true proportions, no crop */
-  margin: 1.5rem auto 0;
-  border-radius: 4px;
+  width: calc(100vw - 3rem);   /* ~1.5rem (~1.5cm) margin each side */
+  max-width: 2100px;           /* cap on very large screens */
+  height: auto;                /* keep true proportions, no cropping */
+
+  /* Recenter: move to viewport center regardless of parent width. */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  margin-top: 1.5rem;
+  border-radius: 6px;
 }
 
-/* Center the text block. */
 .hero .copy {
   text-align: center;
   max-width: 48rem;
