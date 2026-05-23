@@ -239,13 +239,10 @@ main .sl-markdown-content {
 	transition: color 0.15s ease;
 }
 /* ============================================================
-   HERO BANNER — 99 Humanity Fund  (v4 — viewport-width, no scroll)
-   Append to END of src/styles/custom.css.
-   REMOVE the earlier v1/v2/v3 hero blocks first — this replaces them.
-
-   The image is sized against the VIEWPORT (not Starlight's narrower
-   .sl-container), so it spans nearly the full screen width with a small
-   margin each side. Natural proportions kept (no crop). No sideways scroll.
+   HERO BANNER — 99 Humanity Fund  (v5 — specificity fix)
+   Replaces the v4 block. Higher-specificity selector + !important
+   so it beats Starlight's default .sl-markdown-content img rules,
+   which were overriding the plain .hero-banner class.
    ============================================================ */
 
 .hero {
@@ -256,27 +253,23 @@ main .sl-markdown-content {
 }
 
 /* Hide the small frontmatter-generated image if one still renders. */
-.hero img,
+.hero > img,
 .hero picture {
   display: none !important;
 }
 
-/* The banner image (added in the page body as <img class="hero-banner">).
-   Key trick: width is based on 100vw (the whole viewport) minus a margin,
-   and we recenter it relative to its narrow parent using a transform.
-   This escapes the .sl-container max-width WITHOUT the scroll bug. */
-.hero-banner {
-  display: block;
-  width: calc(100vw - 3rem);   /* ~1.5rem (~1.5cm) margin each side */
-  max-width: 2800px;           /* cap on very large screens */
-  height: auto;                /* keep true proportions, no cropping */
-
-  /* Recenter: move to viewport center regardless of parent width. */
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-  margin-top: 1.5rem;
+/* The banner image. Scoped through .sl-markdown-content for specificity,
+   and !important to be certain it beats Starlight's image defaults. */
+.sl-markdown-content img.hero-banner,
+img.hero-banner {
+  display: block !important;
+  width: calc(100vw - 3rem) !important;   /* ~1.5rem margin each side */
+  max-width: 2100px !important;           /* cap on large screens */
+  height: auto !important;                /* keep proportions, no crop */
+  position: relative !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin: 1.5rem 0 0 !important;
   border-radius: 6px;
 }
 
