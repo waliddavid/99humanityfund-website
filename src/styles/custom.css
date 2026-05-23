@@ -266,7 +266,7 @@ main .sl-markdown-content {
    natural aspect ratio preserved (height auto = no cropping). */
 .hero-banner {
   display: block;
-  width: 96%;          /* leaves a little space on each side */
+  width: 100%;          /* leaves a little space on each side */
   max-width: 1800px;   /* don't get absurdly huge on ultra-wide screens */
   height: auto;        /* keep the image's true proportions, no crop */
   margin: 1.5rem auto 0;
