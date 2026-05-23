@@ -27,7 +27,11 @@ export default defineConfig({
 			plugins: [
 				// starlight-utils: lifts the "leadingNavLinks" sidebar entry below
 				// up into the header nav bar (next to the site title). The fake
-				// sidebar entry itself is removed from the normal sidebar automatically.
+				// sidebar entry itself is removed from the normal sidebar.
+				//
+				// IMPORTANT: when this plugin is active, EVERY top-level sidebar
+				// item must be a GROUP (have `items:`) — plain top-level links
+				// like { label, link } are NOT allowed and will fail the build.
 				starlightUtils({
 					navLinks: {
 						leading: { useSidebarLabelled: 'leadingNavLinks' },
@@ -36,8 +40,7 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
-					// This entry is NOT shown in the sidebar — the plugin pulls it
-					// into the header nav. These are the Menu + About header links.
+					// Pulled into the HEADER nav by the plugin (not shown in sidebar).
 					label: 'leadingNavLinks',
 					items: [
 						{ label: 'Menu', link: '/menu/' },
@@ -45,12 +48,12 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Introduction',
-					link: '/',
-				},
-				{
-					label: 'About the Fund',
-					link: '/about/',
+					// Top-level groups only from here down (plugin requirement).
+					label: 'Overview',
+					items: [
+						{ label: 'Introduction', link: '/' },
+						{ label: 'About the Fund', link: '/about/' },
+					],
 				},
 				{
 					label: 'The New World Order Series',
