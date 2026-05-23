@@ -212,7 +212,7 @@ main .sl-markdown-content {
 	transform: translateX(-50%);
 	border-radius: 6px;
 	overflow: hidden;
-	line-height: 0; /* removes any gap above the image */
+	font-size: 0; /* kills the inline-image baseline gap without affecting overlay text */
 }
 
 /* The image: full width, natural height (no crop). */
@@ -226,15 +226,17 @@ img.hero-banner {
 	border-radius: 0 !important;
 }
 
-/* (2) Overlay covers the WHOLE image (top to bottom), darker at the
-   top where the text sits, fading down. Pinned hard to the top edge so
-   there is no lighter strip at the top. */
+/* (2) Overlay covers the WHOLE image. Explicit top:0 + height:100%
+   forces it to match the image height exactly (fixes a ~16px gap at
+   the top that left a lighter strip). font-size reset so the overlay
+   text isn't affected by the wrap's font-size:0. */
 .hero-overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	height: 100%;
+	font-size: 1rem;
 	padding: clamp(1.25rem, 4vw, 3rem);
 	line-height: 1.2;
 	background: linear-gradient(
@@ -281,6 +283,16 @@ img.hero-banner {
 	.hero-overlay .hero-sub {
 		white-space: normal;
 	}
+}
+
+/* Remove the divider line / separator between content panels.
+   Confirmed via inspector: the line sits between two .content-panel
+   divs. This removes that top border and the extra top padding. */
+.content-panel + .content-panel {
+	border-top: none !important;
+}
+.content-panel {
+	border-top: none !important;
 }
 
 /* Header layout: title left, links + search pushed to the right. */
