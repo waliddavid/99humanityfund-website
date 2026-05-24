@@ -207,7 +207,7 @@ main .sl-markdown-content {
 	display: block;
 	width: calc(100vw - 3rem);
 	max-width: 2100px;
-	margin: 0.25rem auto 0 !important;
+	margin: 0.5rem auto 0 !important;
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 6px;
@@ -294,6 +294,16 @@ img.hero-banner {
 }
 .content-panel {
 	border-top: none !important;
+}
+
+/* Collapse the empty FIRST content-panel on the home page. Confirmed
+   via inspector: Starlight renders an empty title panel (~48px tall,
+   from its 1.5rem top+bottom padding) above the real content, which
+   created the gap below the header. Zero its padding so it collapses.
+   The second .content-panel (the actual content) keeps its padding. */
+main > .content-panel:first-child {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 }
 
 /* Header layout: title left, links + search pushed to the right. */
