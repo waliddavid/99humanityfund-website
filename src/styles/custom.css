@@ -224,18 +224,19 @@ img.hero-banner {
 	height: auto !important;
 	margin: 0 !important;
 	border-radius: 0 !important;
+	vertical-align: top !important;
 }
 
-/* (2) Overlay covers the WHOLE image. Explicit top:0 + height:100%
-   forces it to match the image height exactly (fixes a ~16px gap at
-   the top that left a lighter strip). font-size reset so the overlay
-   text isn't affected by the wrap's font-size:0. */
+/* (2) Overlay covers the WHOLE image. Pinning BOTH top:0 and bottom:0
+   forces it to span the full parent height with no vertical drift
+   (fixes the 16px downward offset that left a stripe at the top). */
 .hero-overlay {
 	position: absolute;
 	top: 0;
+	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 100%;
+	margin: 0 !important;
 	font-size: 1rem;
 	padding: clamp(1.25rem, 4vw, 3rem);
 	line-height: 1.2;
