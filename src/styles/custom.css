@@ -207,7 +207,7 @@ main .sl-markdown-content {
 	display: block;
 	width: calc(100vw - 3rem);
 	max-width: 2100px;
-	margin: 1rem auto 0 !important;
+	margin: 0.25rem auto 0 !important;
 	left: 50%;
 	transform: translateX(-50%);
 	border-radius: 6px;
