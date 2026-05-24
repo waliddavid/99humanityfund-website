@@ -306,6 +306,18 @@ main > .content-panel:first-child {
 	padding-bottom: 0 !important;
 }
 
+/* Homepage prose ("What this project is" / "How to read") — match the
+   card grid's width and centering so the whole scrolling section reads
+   as one 60rem centered column. Overrides Starlight's narrower
+   paragraph max-width for these blocks only. */
+.home-prose {
+	max-width: 60rem;
+	margin: 0 auto;
+}
+.home-prose p {
+	max-width: none !important;
+}
+
 /* Header layout: title left, links + search pushed to the right. */
 header .header {
 	display: flex;
