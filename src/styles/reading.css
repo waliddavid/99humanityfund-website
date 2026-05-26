@@ -147,49 +147,53 @@
 }
 
 /* Data table inside the reading column (e.g. the adoption curve).
-   Scoped to .reading so it never touches Starlight's own tables. */
+   Scoped to .reading so it never touches Starlight's own tables.
+   Uses Starlight theme variables so it adapts to light/dark mode. */
 .reading .data-table {
-  width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0 2rem;
+  margin: 1.5rem auto 2rem;   /* auto centers the table in the column */
   font-family: var(--sl-font);
   font-size: 0.95rem;
   line-height: 1.4;
 }
 .reading .data-table caption {
   caption-side: top;
-  text-align: left;
+  text-align: center;
   font-family: Georgia, 'Source Serif 4', serif;
   font-style: italic;
   font-size: 0.92rem;
   color: var(--sl-color-gray-2);
   margin-bottom: 0.6rem;
 }
+/* Header bar: accent background, with text that contrasts against it
+   in BOTH light and dark mode. --sl-color-text-invert flips with theme
+   to stay legible on the accent fill. */
 .reading .data-table th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--sl-color-white);
-  border-bottom: 2px solid var(--sl-color-accent);
-  padding: 0.55rem 0.6rem;
-  font-size: 0.78rem;
+  text-align: right;
+  font-weight: 700;
+  background: var(--sl-color-accent);
+  color: var(--sl-color-text-invert);
+  padding: 0.6rem 0.7rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
+  vertical-align: bottom;
+}
+.reading .data-table th:first-child {
+  text-align: left;
 }
 .reading .data-table td {
-  padding: 0.5rem 0.6rem;
+  padding: 0.55rem 0.7rem;
   border-bottom: 1px solid var(--sl-color-hairline-light);
   color: var(--sl-color-gray-1);
+  text-align: right;
 }
 .reading .data-table td:first-child {
   font-weight: 600;
   color: var(--sl-color-white);
   white-space: nowrap;
+  text-align: left;
 }
 .reading .data-table tr:last-child td {
   border-bottom: none;
-}
-/* Numeric columns align right for easy scanning */
-.reading .data-table td:not(:first-child),
-.reading .data-table th:not(:first-child) {
-  text-align: right;
 }
