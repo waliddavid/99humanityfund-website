@@ -11,6 +11,7 @@ export default defineConfig({
 			description: 'A documentary essay on collective economic ownership in capitalist economies.',
 			customCss: [
 				'./src/styles/custom.css',
+				'./src/styles/reading.css',
 			],
 			// Root-locale setup: English is served with NO /en/ prefix.
 			// URLs stay clean (e.g. /part-1/ not /en/part-1/) and your
