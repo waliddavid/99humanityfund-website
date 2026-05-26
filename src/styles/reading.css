@@ -1,0 +1,147 @@
+/* ============================================================
+   Sub-article reading styles — 99 Humanity Fund
+   Shared stylesheet for every Part essay (splash template).
+   Loaded site-wide via astro.config.mjs customCss, but every
+   rule is scoped to .reading / essay-specific classes so it
+   does nothing on the homepage or Part landing pages.
+
+   Reading measure: 38rem ≈ 65-72 chars/line at this font size,
+   the readability sweet spot. Change this ONE value to adjust
+   the column width across ALL essays.
+   ============================================================ */
+
+.reading {
+  max-width: 38rem;
+  margin: 0 auto;
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 1.12rem;
+  line-height: 1.78;
+}
+
+.reading h1 {
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 2.2rem; font-weight: 700; line-height: 1.15;
+  color: var(--sl-color-white);
+  margin: 0 0 1.5rem;
+}
+.reading h1 {
+  margin-top: 0 !important;
+}
+
+.reading h2 {
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 1.5rem; font-weight: 700; line-height: 1.25;
+  color: var(--sl-color-white);
+  border: none; padding: 0;
+  margin-top: 2.4rem; margin-bottom: 0.4rem;
+}
+
+.reading p {
+  margin: 1.1rem 0;
+  color: var(--sl-color-gray-1);
+  text-align: justify;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+/* Article label ("Article 1-1") above the title */
+.reading .article-label {
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--sl-color-accent);
+  margin: 0 0 0.25rem !important;
+}
+
+/* Article hero image at the top of the essay */
+.article-hero {
+  width: 100%;
+  margin: 0 0 1.5rem;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--sl-color-hairline-light);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+}
+.article-hero img { display: block; width: 100%; height: auto; }
+
+/* Audio player block (below the hero image) */
+.article-audio {
+  margin: 0 0 2rem;
+  padding: 0;
+}
+.article-audio figcaption {
+  font-family: var(--sl-font);
+  font-size: 0.8rem; letter-spacing: 0.03em;
+  color: var(--sl-color-gray-3);
+  margin: 0 0 0.5rem;
+}
+.article-audio audio {
+  width: 100%;
+  height: 40px;
+}
+
+/* "Back to Part" link above the reading column */
+.back-to-part {
+  display: block;
+  max-width: 38rem;
+  margin: 0 auto 1.5rem;
+  font-family: var(--sl-font);
+  font-size: 0.85rem; letter-spacing: 0.04em;
+  color: var(--sl-color-accent);
+  text-decoration: none; font-weight: 600;
+  text-align: left;
+}
+.back-to-part:hover { text-decoration: underline; }
+
+/* Series index — clickable list of the other articles */
+.series-index {
+  list-style: none;
+  margin: 1rem 0 2rem;
+  padding: 0;
+}
+.series-index li { margin: 0 0 0.75rem; }
+.series-index a {
+  display: block;
+  text-decoration: none;
+  border: 1px solid var(--sl-color-hairline-light);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: var(--sl-color-black);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.series-index a:hover {
+  transform: translateY(-2px);
+  border-color: var(--sl-color-accent);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+}
+.si-label {
+  display: block;
+  font-family: var(--sl-font);
+  font-size: 0.68rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--sl-color-accent);
+  margin-bottom: 0.2rem;
+}
+.si-title {
+  display: block;
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 1.08rem; font-weight: 600; line-height: 1.25;
+  color: var(--sl-color-white);
+  margin-bottom: 0.15rem;
+}
+.si-desc {
+  display: block;
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-size: 0.9rem; line-height: 1.45;
+  color: var(--sl-color-gray-2);
+}
+
+/* Italic closing call-to-action block */
+.closing-call {
+  font-style: italic;
+  color: var(--sl-color-gray-1) !important;
+  border-left: 3px solid var(--sl-color-accent);
+  padding-left: 1.1rem;
+  margin: 2rem 0 1rem !important;
+  text-align: left;
+}
