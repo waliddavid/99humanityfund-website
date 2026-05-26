@@ -151,6 +151,7 @@
    Uses Starlight theme variables so it adapts to light/dark mode. */
 .reading .data-table,
 .sl-markdown-content .reading .data-table {
+  display: table;
   border-collapse: collapse;
   width: auto;
   max-width: 100%;
