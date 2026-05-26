@@ -145,3 +145,51 @@
   margin: 2rem 0 1rem !important;
   text-align: left;
 }
+
+/* Data table inside the reading column (e.g. the adoption curve).
+   Scoped to .reading so it never touches Starlight's own tables. */
+.reading .data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0 2rem;
+  font-family: var(--sl-font);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.reading .data-table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: Georgia, 'Source Serif 4', serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--sl-color-gray-2);
+  margin-bottom: 0.6rem;
+}
+.reading .data-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--sl-color-white);
+  border-bottom: 2px solid var(--sl-color-accent);
+  padding: 0.55rem 0.6rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.reading .data-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--sl-color-hairline-light);
+  color: var(--sl-color-gray-1);
+}
+.reading .data-table td:first-child {
+  font-weight: 600;
+  color: var(--sl-color-white);
+  white-space: nowrap;
+}
+.reading .data-table tr:last-child td {
+  border-bottom: none;
+}
+/* Numeric columns align right for easy scanning */
+.reading .data-table td:not(:first-child),
+.reading .data-table th:not(:first-child) {
+  text-align: right;
+}
