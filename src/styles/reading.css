@@ -149,9 +149,15 @@
 /* Data table inside the reading column (e.g. the adoption curve).
    Scoped to .reading so it never touches Starlight's own tables.
    Uses Starlight theme variables so it adapts to light/dark mode. */
-.reading .data-table {
+.reading .data-table,
+.sl-markdown-content .reading .data-table {
   border-collapse: collapse;
-  margin: 1.5rem auto 2rem;   /* auto centers the table in the column */
+  width: auto;
+  max-width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
   font-family: var(--sl-font);
   font-size: 0.95rem;
   line-height: 1.4;
@@ -196,4 +202,16 @@
 }
 .reading .data-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Footnote sitting directly beneath a data table (e.g. the "*" note) */
+.reading .table-footnote {
+  max-width: 38rem;
+  margin: -1.25rem auto 2rem !important;
+  text-align: center;
+  font-family: var(--sl-font);
+  font-size: 0.78rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--sl-color-gray-3);
 }
