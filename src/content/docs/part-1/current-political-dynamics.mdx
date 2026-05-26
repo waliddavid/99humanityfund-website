@@ -2,7 +2,9 @@
 title: Current Political Dynamics
 description: Who actually benefits from the extreme-left and extreme-right systems — and the citizen-powered alternative to the empire model.
 template: splash
-prev: false
+prev:
+  link: /part-1/
+  label: "← Back to Part 1"
 next:
   link: /part-1/why-empires-corrupt-everything/
   label: "Article 1-2 — Why Empires Corrupt Everything"
@@ -10,7 +12,7 @@ next:
 
 <a href="/part-1/" class="back-to-part">← Back to Part 1</a>
 
-<div class="reading">
+<div class="reading" lang="en">
 
 <p class="article-label">Article 1-1</p>
 
@@ -80,14 +82,25 @@ The math is real. The mechanism exists. The only thing missing is the self-deter
     border: none; padding: 0;
     margin-top: 2.4rem; margin-bottom: 0.4rem;
   }
-  .reading p { margin: 1.1rem 0; color: var(--sl-color-gray-1); }
+  .reading p {
+    margin: 1.1rem 0;
+    color: var(--sl-color-gray-1);
+    text-align: justify;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
 
-  .article-label {
+  .reading .article-label {
     font-family: Georgia, 'Source Serif 4', serif;
     font-size: 0.78rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.14em;
     color: var(--sl-color-accent);
-    margin: 0 0 0.5rem !important;
+    margin: 0 0 0.25rem !important;
+  }
+  .reading h1.reading-title,
+  .reading h1 {
+    margin-top: 0 !important;
   }
 
   .article-hero {
@@ -177,6 +190,7 @@ The math is real. The mechanism exists. The only thing missing is the self-deter
     border-left: 3px solid var(--sl-color-accent);
     padding-left: 1.1rem;
     margin: 2rem 0 1rem !important;
+    text-align: left;
   }
 `}
 </style>
