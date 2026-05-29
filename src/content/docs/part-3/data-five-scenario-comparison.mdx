@@ -1,0 +1,122 @@
+---
+title: "Data: Five-Scenario Comparison"
+description: "Country-level redistribution targets across all five scenarios — Equity-leaning, Balanced, Efficiency-leaning, Unemployment-Leveling, and Informal Insertion — for 192 countries. Explore the interactive table or download the full CSV."
+template: splash
+prev:
+  link: /part-3/methodology/
+  label: "Article 3-2 — Methodology and Findings"
+next:
+  link: /part-3/data-phased-implementation/
+  label: "Article 3-4 — Phased Implementation Data"
+---
+
+<a href="/part-3/" class="back-to-part">← Back to Part 3</a>
+
+<div class="reading" lang="en">
+
+<p class="article-label">Article 3-3</p>
+
+# Data: Five-Scenario Comparison
+
+<div class="article-hero">
+  <img src="/cards/part-3-3.jpg" alt="Five paths diverging from one origin — the five redistribution scenarios compared." />
+</div>
+
+<p class="dl-row"><a class="dl-button" href="/downloads/five-scenario-comparison.csv" download>↓ Download the full CSV (192 countries, 31 columns)</a></p>
+
+This is the country-level comparison file behind the Part 3 analysis. For each country it gives the current manufacturing employment and the 2056 target under all five redistribution scenarios — Equity-leaning, Balanced, Efficiency-leaning, Unemployment-Leveling, and Informal Insertion (the proposed implementation) — along with the change from baseline, the underlying demand signals, and the informal-to-formal transition figures.
+
+All employment figures are in **thousands of jobs**. So China's current total of roughly 215,000 in the file means about 215 million workers. Targets are 2056 outputs; deltas are the change from the 2027 baseline. The interactive table below shows a rounded view of the most-used columns; the downloadable CSV contains every column at full precision.
+
+## Explore the data
+
+Sort any column by clicking its header, search by country name or ISO code, and filter by region, income group, or feasibility flag.
+
+<iframe class="data-frame" src="/tables/five-scenario-table.html" title="Interactive five-scenario comparison table" loading="lazy"></iframe>
+
+## What the columns mean
+
+The downloadable CSV has 31 columns. Here is what each one represents.
+
+<table class="data-table">
+  <thead>
+    <tr><th>Column</th><th>Meaning</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>iso3</code></td><td>ISO 3166-1 alpha-3 country code.</td></tr>
+    <tr><td><code>un_name</code></td><td>UN member-state name.</td></tr>
+    <tr><td><code>wb_region</code></td><td>World Bank region grouping.</td></tr>
+    <tr><td><code>wb_income_group</code></td><td>World Bank income classification (Low / Lower-middle / Upper-middle / High income).</td></tr>
+    <tr><td><code>feasibility_flag</code></td><td>Implementation-context flag: stable, below_average, fragile, or severe_conflict.</td></tr>
+    <tr><td><code>current_total</code></td><td>Current (2027 baseline) total manufacturing employment, in thousands.</td></tr>
+    <tr><td><code>target_balanced</code></td><td>2056 target under the Balanced scenario (40% equity / 35% efficiency / 25% capability).</td></tr>
+    <tr><td><code>target_equity</code></td><td>2056 target under the Equity-leaning scenario (60% equity weight).</td></tr>
+    <tr><td><code>target_efficiency</code></td><td>2056 target under the Efficiency-leaning scenario (60% efficiency weight).</td></tr>
+    <tr><td><code>wap</code></td><td>Working-age population (used to weight redistribution shares), in thousands.</td></tr>
+    <tr><td><code>delta_balanced</code></td><td>Change from current to Balanced target (target_balanced − current_total).</td></tr>
+    <tr><td><code>delta_equity</code></td><td>Change from current to Equity target.</td></tr>
+    <tr><td><code>delta_efficiency</code></td><td>Change from current to Efficiency target.</td></tr>
+    <tr><td><code>pct_change_balanced</code></td><td>Balanced delta expressed as a percentage of current employment.</td></tr>
+    <tr><td><code>unemp_rate_filled</code></td><td>Official unemployment rate used as model input (gaps filled from peer data).</td></tr>
+    <tr><td><code>mfg_target_unemp_leveling</code></td><td>2056 target under the Unemployment-Leveling scenario.</td></tr>
+    <tr><td><code>unemp_rate_2050_unemp_lev_pct</code></td><td>Projected 2050 unemployment rate under Unemployment-Leveling.</td></tr>
+    <tr><td><code>baseline_unemp_2050_K</code></td><td>Projected 2050 unemployed persons under baseline (no redistribution), in thousands.</td></tr>
+    <tr><td><code>labor_force_2050_K</code></td><td>Projected 2050 labor force, in thousands.</td></tr>
+    <tr><td><code>total_emp_2050_K</code></td><td>Projected 2050 total employment, in thousands.</td></tr>
+    <tr><td><code>delta_unemp_leveling</code></td><td>Change from current to Unemployment-Leveling target.</td></tr>
+    <tr><td><code>mfg_target_informal_insertion</code></td><td>2056 target under Informal Insertion — <strong>the proposed implementation</strong>.</td></tr>
+    <tr><td><code>unemp_rate_2050_ii_pct</code></td><td>Projected 2050 unemployment rate under Informal Insertion.</td></tr>
+    <tr><td><code>mfg_employment_informal_thousands</code></td><td>Estimated informal manufacturing employment, in thousands.</td></tr>
+    <tr><td><code>informal_share</code></td><td>Informal share of manufacturing employment before redistribution (0–1).</td></tr>
+    <tr><td><code>informal_share_after</code></td><td>Informal share after Informal Insertion redistribution (0–1).</td></tr>
+    <tr><td><code>informal_formalized</code></td><td>Workers moved from informal to formal manufacturing, in thousands.</td></tr>
+    <tr><td><code>demand_unemp</code></td><td>Demand signal from official unemployment above the 10% ceiling (Path 1), in thousands.</td></tr>
+    <tr><td><code>demand_informal</code></td><td>Demand signal from 25% of informal manufacturing workers (Path 2), in thousands.</td></tr>
+    <tr><td><code>effective_demand</code></td><td>Effective demand = MAX(demand_unemp, demand_informal), in thousands.</td></tr>
+    <tr><td><code>delta_informal_insertion</code></td><td>Change from current to Informal Insertion target.</td></tr>
+  </tbody>
+</table>
+
+<p class="note-line">Coverage: 192 countries with direct or peer-proxy data. Full methodology, scenario definitions, and data provenance are in <a href="/part-3/methodology/">Article 3-2</a>. Data sources include UN WPP 2024, ILO ILOSTAT, UNIDO INDSTAT, UN Comtrade, World Bank WGI/WDI/LPI, UNESCO UIS, USGS, and the Energy Institute — all consulted May 2026.</p>
+
+<style>
+{`
+  .dl-row { margin: 1.25rem 0 1.75rem; }
+  .dl-button {
+    display: inline-block;
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 0.95rem; font-weight: 600;
+    text-decoration: none;
+    color: var(--sl-color-white);
+    background: var(--sl-color-accent);
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    transition: opacity 0.18s ease;
+  }
+  .dl-button:hover { opacity: 0.85; }
+  .data-frame {
+    width: 100%;
+    height: 640px;
+    border: 1px solid var(--sl-color-hairline-light);
+    border-radius: 10px;
+    background: #0f1115;
+    margin: 1rem 0 1.5rem;
+  }
+  .data-table code {
+    font-size: 0.82rem;
+    background: var(--sl-color-gray-7, rgba(255,255,255,0.04));
+    padding: 0.05rem 0.3rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .note-line {
+    font-family: Georgia, 'Source Serif 4', serif;
+    font-size: 0.88rem; line-height: 1.6;
+    color: var(--sl-color-gray-2);
+    border-top: 1px solid var(--sl-color-hairline-light);
+    padding-top: 1rem; margin-top: 1.75rem;
+  }
+`}
+</style>
+
+</div>
