@@ -28,6 +28,8 @@ This is the country-level comparison file behind the Part 3 analysis. For each c
 
 All employment figures are in **thousands of jobs**. So China's current total of roughly 215,000 in the file means about 215 million workers. Targets are 2056 outputs; deltas are the change from the 2027 baseline. The interactive table below shows a rounded view of the most-used columns; the downloadable CSV contains every column at full precision.
 
+<blockquote class="callout"><strong>A note on the numbers.</strong> The downloadable CSV is the raw five-scenario model file covering <strong>192 countries</strong>. The interactive table below shows <strong>194 countries</strong>, and its Informal Insertion column reflects the more recent phased-implementation run — the same figures used throughout the Part 3 articles and in the <a href="/part-3/data-phased-implementation/">Article 3-4</a> data (for example, China's 2056 Informal Insertion total reads &#126;186M). The two extra countries in the table, <strong>Ethiopia and Venezuela</strong>, appear in the phased data but not yet in this five-scenario file, because the source lacked detailed scenario-level data for them; their other-scenario cells show "—". The four other scenarios (Balanced, Equity, Efficiency, Unemployment-Leveling) are taken from the five-scenario file in both the table and the download.</blockquote>
+
 ## Explore the data
 
 Sort any column by clicking its header, search by country name or ISO code, and filter by region, income group, or feasibility flag. Click anywhere on the table — or the button below — to open it full screen.
@@ -83,6 +85,16 @@ The downloadable CSV has 31 columns. Here is what each one represents.
 
 <style>
 {`
+  .reading blockquote.callout {
+    border-left: 4px solid var(--sl-color-accent);
+    background: var(--sl-color-gray-7, rgba(255,255,255,0.02));
+    padding: 0.9rem 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--sl-color-gray-1);
+  }
   .reading .dl-row { margin: 1.25rem 0 1.75rem; }
   .reading .dl-button, .reading .fs-button {
     display: inline-block;
