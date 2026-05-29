@@ -30,7 +30,9 @@ All employment figures are in **thousands of jobs**. So China's current total of
 
 ## Explore the data
 
-Sort any column by clicking its header, search by country name or ISO code, and filter by region, income group, or feasibility flag.
+Sort any column by clicking its header, search by country name or ISO code, and filter by region, income group, or feasibility flag. Click anywhere on the table — or the button below — to open it full screen.
+
+<p class="dl-row"><a class="fs-button" href="/tables/five-scenario-table-full.html" target="_blank" rel="noopener">⤢ Open full screen</a></p>
 
 <iframe class="data-frame" src="/tables/five-scenario-table.html" title="Interactive five-scenario comparison table" loading="lazy"></iframe>
 
@@ -81,26 +83,35 @@ The downloadable CSV has 31 columns. Here is what each one represents.
 
 <style>
 {`
-  .dl-row { margin: 1.25rem 0 1.75rem; }
-  .dl-button {
+  .reading .dl-row { margin: 1.25rem 0 1.75rem; }
+  .reading .dl-button, .reading .fs-button {
     display: inline-block;
     font-family: Georgia, 'Source Serif 4', serif;
     font-size: 0.95rem; font-weight: 600;
-    text-decoration: none;
-    color: var(--sl-color-white);
-    background: var(--sl-color-accent);
+    text-decoration: none !important;
+    color: #1a1a1a !important;
+    background: var(--sl-color-accent) !important;
     padding: 0.6rem 1.1rem;
     border-radius: 8px;
+    border: none;
     transition: opacity 0.18s ease;
   }
-  .dl-button:hover { opacity: 0.85; }
+  .reading .dl-button:hover, .reading .fs-button:hover { opacity: 0.85; color: #1a1a1a !important; }
+  .reading .fs-button {
+    background: transparent !important;
+    color: var(--sl-color-accent) !important;
+    border: 1px solid var(--sl-color-accent);
+    font-size: 0.9rem;
+    padding: 0.45rem 0.9rem;
+  }
+  .reading .fs-button:hover { background: var(--sl-color-accent) !important; color: #1a1a1a !important; opacity: 1; }
   .data-frame {
     width: 100%;
-    height: 640px;
+    height: 1100px;
     border: 1px solid var(--sl-color-hairline-light);
     border-radius: 10px;
     background: #0f1115;
-    margin: 1rem 0 1.5rem;
+    margin: 0.5rem 0 1.5rem;
   }
   .data-table code {
     font-size: 0.82rem;
