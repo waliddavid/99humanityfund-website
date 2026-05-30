@@ -532,19 +532,20 @@ The point isn't to predict 2056. It's to demonstrate that we have the methodolog
     margin: 1.8rem 0 0.6rem; padding: 0;
     line-height: 1.3;
   }
-  .dl-row { margin: 1.25rem 0 1.75rem; }
-  .dl-button {
+ .reading .dl-row { margin: 1.25rem 0 1.75rem; }
+  .reading .dl-button {
     display: inline-block;
     font-family: Georgia, 'Source Serif 4', serif;
     font-size: 0.95rem; font-weight: 600;
-    text-decoration: none;
-    color: var(--sl-color-white);
-    background: var(--sl-color-accent);
+    text-decoration: none !important;
+    color: #1a1a1a !important;
+    background: var(--sl-color-accent) !important;
     padding: 0.6rem 1.1rem;
     border-radius: 8px;
+    border: none;
     transition: opacity 0.18s ease;
   }
-  .dl-button:hover { opacity: 0.85; }
+  .reading .dl-button:hover { opacity: 0.85; color: #1a1a1a !important; }
   .exec-summary {
     border: 1px solid var(--sl-color-hairline-light);
     border-left: 4px solid var(--sl-color-accent);
