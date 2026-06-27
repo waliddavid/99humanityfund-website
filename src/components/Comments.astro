@@ -54,6 +54,7 @@ const { slug } = Astro.props;
     <h3 class="hf-form__h">Create an account</h3>
     <label>Handle <small>(3–24 letters, numbers, _ or - — no dots or spaces; shown publicly)</small>
       <input type="text" id="hf-reg-handle" autocomplete="username" /></label>
+    <p class="hf-field-err" id="hf-reg-handle-err"></p>
     <label>Email <small>(private — only for reply notifications)</small>
       <input type="email" id="hf-reg-email" autocomplete="email" /></label>
     <label>Password <small>(at least 8 characters)</small>
@@ -137,6 +138,8 @@ const { slug } = Astro.props;
   .hf-form textarea { resize: vertical; min-height: 5rem; }
   .hf-form__row { display: flex; gap: .6rem; margin-top: .4rem; }
   .hf-form__err { color: #b3261e; font-size: .88rem; font-weight: 500; margin: .6rem 0 0; min-height: 1em; }
+  .hf-field-err { color: #b3261e; font-size: .82rem; font-weight: 500; margin: -.4rem 0 .8rem; min-height: 0; }
+  .hf-field-err:empty { display: none; }
   .hf-newcomment { background: transparent; border: none; padding: 0; }
   .hf-turnstile { margin: .5rem 0; }
   .hf-list { display: flex; flex-direction: column; gap: 1.1rem; }
@@ -316,6 +319,15 @@ const { slug } = Astro.props;
     };
     root.querySelectorAll("[data-cancel]").forEach((b) => b.onclick = () => { b.closest("form").hidden = true; });
 
+    // Live handle validation: clear the error the moment the handle is valid.
+    $("hf-reg-handle").addEventListener("input", () => {
+      const v = $("hf-reg-handle").value.trim();
+      const he = $("hf-reg-handle-err");
+      if (!v || /^[A-Za-z0-9_-]{3,24}$/.test(v)) he.textContent = "";
+      else if (/[^A-Za-z0-9_-]/.test(v)) he.textContent = "No dots, spaces or symbols — only letters, numbers, _ or -.";
+      else he.textContent = "";
+    });
+
     $("hf-login-form").onsubmit = async (e) => {
       e.preventDefault();
       try {
@@ -329,12 +341,14 @@ const { slug } = Astro.props;
     $("hf-register-form").onsubmit = async (e) => {
       e.preventDefault();
       const errEl = $("hf-reg-err");
+      const handleErr = $("hf-reg-handle-err");
       const handle = $("hf-reg-handle").value.trim();
       const email = $("hf-reg-email").value.trim();
       const pass = $("hf-reg-pass").value;
+      errEl.textContent = ""; handleErr.textContent = "";
       // ---- client-side checks: instant, obvious feedback, no wasted captcha ----
       if (!/^[A-Za-z0-9_-]{3,24}$/.test(handle)) {
-        errEl.textContent = "Handle must be 3–24 characters: letters, numbers, _ or - only (no dots, spaces or other symbols).";
+        handleErr.textContent = "No dots, spaces or symbols — only letters, numbers, _ or - (3–24 chars).";
         $("hf-reg-handle").focus();
         return;
       }
@@ -348,7 +362,6 @@ const { slug } = Astro.props;
         $("hf-reg-pass").focus();
         return;
       }
-      errEl.textContent = "";
       try {
         const d = await api("/api/register", { method: "POST",
           body: JSON.stringify({
