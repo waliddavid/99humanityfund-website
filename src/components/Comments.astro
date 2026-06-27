@@ -52,7 +52,7 @@ const { slug } = Astro.props;
 
   <form class="hf-form" id="hf-register-form" hidden>
     <h3 class="hf-form__h">Create an account</h3>
-    <label>Handle <small>(3–24 letters, numbers, _ or -; shown publicly)</small>
+    <label>Handle <small>(3–24 letters, numbers, _ or - — no dots or spaces; shown publicly)</small>
       <input type="text" id="hf-reg-handle" autocomplete="username" /></label>
     <label>Email <small>(private — only for reply notifications)</small>
       <input type="email" id="hf-reg-email" autocomplete="email" /></label>
@@ -136,7 +136,7 @@ const { slug } = Astro.props;
   }
   .hf-form textarea { resize: vertical; min-height: 5rem; }
   .hf-form__row { display: flex; gap: .6rem; margin-top: .4rem; }
-  .hf-form__err { color: #b3261e; font-size: .85rem; margin: .6rem 0 0; min-height: 1em; }
+  .hf-form__err { color: #b3261e; font-size: .88rem; font-weight: 500; margin: .6rem 0 0; min-height: 1em; }
   .hf-newcomment { background: transparent; border: none; padding: 0; }
   .hf-turnstile { margin: .5rem 0; }
   .hf-list { display: flex; flex-direction: column; gap: 1.1rem; }
@@ -328,14 +328,34 @@ const { slug } = Astro.props;
 
     $("hf-register-form").onsubmit = async (e) => {
       e.preventDefault();
+      const errEl = $("hf-reg-err");
+      const handle = $("hf-reg-handle").value.trim();
+      const email = $("hf-reg-email").value.trim();
+      const pass = $("hf-reg-pass").value;
+      // ---- client-side checks: instant, obvious feedback, no wasted captcha ----
+      if (!/^[A-Za-z0-9_-]{3,24}$/.test(handle)) {
+        errEl.textContent = "Handle must be 3–24 characters: letters, numbers, _ or - only (no dots, spaces or other symbols).";
+        $("hf-reg-handle").focus();
+        return;
+      }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        errEl.textContent = "Please enter a valid email address.";
+        $("hf-reg-email").focus();
+        return;
+      }
+      if (pass.length < 8) {
+        errEl.textContent = "Password must be at least 8 characters.";
+        $("hf-reg-pass").focus();
+        return;
+      }
+      errEl.textContent = "";
       try {
         const d = await api("/api/register", { method: "POST",
           body: JSON.stringify({
-            handle: $("hf-reg-handle").value.trim(), email: $("hf-reg-email").value.trim(),
-            password: $("hf-reg-pass").value, turnstile: tsToken("hf-reg-turnstile") }) });
+            handle, email, password: pass, turnstile: tsToken("hf-reg-turnstile") }) });
         token = d.token; localStorage.setItem("hf_token", token); me = { handle: d.handle, is_admin: d.is_admin };
         $("hf-register-form").hidden = true; paintAuth(); load();
-      } catch (err) { $("hf-reg-err").textContent = err.message; tsReset("hf-reg-turnstile"); }
+      } catch (err) { errEl.textContent = err.message; tsReset("hf-reg-turnstile"); }
     };
 
     $("hf-comment-form").onsubmit = async (e) => {
