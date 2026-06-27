@@ -1,0 +1,356 @@
+---
+/**
+ * ============================================================================
+ * Comments.astro — drop-in comment section for each article
+ * ============================================================================
+ * Usage in an .mdx article (at the very bottom):
+ *
+ *     import Comments from '../../components/Comments.astro';
+ *     <Comments slug="part-1/the-broken-machine" />
+ *
+ * The `slug` should be a stable, unique id for each article — use the same
+ * path you use in URLs. It ties comments to that article.
+ *
+ * Set API_BASE below to your deployed Worker URL (see DEPLOY-GUIDE.md).
+ * Set TURNSTILE_SITEKEY to your Turnstile site key (the public one).
+ * ============================================================================
+ */
+const { slug } = Astro.props;
+---
+
+<section class="hf-comments" data-slug={slug}>
+  <h2 class="hf-comments__title">Join the conversation</h2>
+  <p class="hf-comments__intro">
+    This series belongs to everyone, including its critics. Tell us where you were
+    convinced and where you were not — and if you see a way to make the proposal
+    stronger, say so. You'll need a free account with a handle of your choosing.
+  </p>
+
+  <!-- Auth area -->
+  <div class="hf-auth" id="hf-auth">
+    <div class="hf-auth__signedout" id="hf-signedout">
+      <button class="hf-btn hf-btn--ghost" id="hf-show-login">Sign in</button>
+      <button class="hf-btn" id="hf-show-register">Create an account</button>
+    </div>
+    <div class="hf-auth__signedin" id="hf-signedin" hidden>
+      Signed in as <strong id="hf-handle"></strong>
+      <button class="hf-btn hf-btn--ghost hf-btn--sm" id="hf-logout">Sign out</button>
+    </div>
+  </div>
+
+  <!-- Login / Register forms (hidden until toggled) -->
+  <form class="hf-form" id="hf-login-form" hidden>
+    <h3 class="hf-form__h">Sign in</h3>
+    <label>Handle <input type="text" id="hf-login-handle" autocomplete="username" /></label>
+    <label>Password <input type="password" id="hf-login-pass" autocomplete="current-password" /></label>
+    <div class="hf-form__row">
+      <button type="submit" class="hf-btn">Sign in</button>
+      <button type="button" class="hf-btn hf-btn--ghost" data-cancel>Cancel</button>
+    </div>
+    <p class="hf-form__err" id="hf-login-err"></p>
+  </form>
+
+  <form class="hf-form" id="hf-register-form" hidden>
+    <h3 class="hf-form__h">Create an account</h3>
+    <label>Handle <small>(3–24 letters, numbers, _ or -; shown publicly)</small>
+      <input type="text" id="hf-reg-handle" autocomplete="username" /></label>
+    <label>Email <small>(private — only for reply notifications)</small>
+      <input type="email" id="hf-reg-email" autocomplete="email" /></label>
+    <label>Password <small>(at least 8 characters)</small>
+      <input type="password" id="hf-reg-pass" autocomplete="new-password" /></label>
+    <div class="hf-turnstile" id="hf-reg-turnstile"></div>
+    <div class="hf-form__row">
+      <button type="submit" class="hf-btn">Create account</button>
+      <button type="button" class="hf-btn hf-btn--ghost" data-cancel>Cancel</button>
+    </div>
+    <p class="hf-form__err" id="hf-reg-err"></p>
+  </form>
+
+  <!-- New comment box (only when signed in) -->
+  <form class="hf-form hf-newcomment" id="hf-comment-form" hidden>
+    <textarea id="hf-comment-body" rows="4" maxlength="5000"
+      placeholder="Share your thoughts on this article…"></textarea>
+    <div class="hf-turnstile" id="hf-comment-turnstile"></div>
+    <div class="hf-form__row">
+      <button type="submit" class="hf-btn">Post comment</button>
+    </div>
+    <p class="hf-form__err" id="hf-comment-err"></p>
+  </form>
+
+  <!-- Comment list -->
+  <div class="hf-list" id="hf-list">
+    <p class="hf-empty" id="hf-empty">Be the first to comment.</p>
+  </div>
+</section>
+
+<style>
+  /* Inherit the site's reading aesthetic: Source Serif body, Inter for UI,
+     warm cream palette. Uses Starlight CSS variables where possible so it
+     auto-matches light/dark, with editorial fallbacks. */
+  .hf-comments {
+    margin: 4rem auto 2rem;
+    max-width: 50rem;
+    font-family: var(--sl-font, "Inter", system-ui, sans-serif);
+    border-top: 1px solid var(--sl-color-gray-5, #d8d2c4);
+    padding-top: 2.5rem;
+  }
+  .hf-comments__title {
+    font-family: var(--sl-font-system, "Source Serif 4", Georgia, serif);
+    font-size: 1.5rem; font-weight: 600; margin: 0 0 .5rem;
+    color: var(--sl-color-white, #1a1a1a);
+  }
+  .hf-comments__intro {
+    font-size: .95rem; line-height: 1.6; color: var(--sl-color-gray-2, #5a5a5a);
+    margin: 0 0 1.5rem; max-width: 42rem;
+  }
+  .hf-btn {
+    font: inherit; font-size: .9rem; font-weight: 500;
+    background: var(--sl-color-accent, #9a5b3f); color: #fff;
+    border: 1px solid transparent; border-radius: 4px;
+    padding: .5rem .9rem; cursor: pointer; transition: opacity .15s;
+  }
+  .hf-btn:hover { opacity: .88; }
+  .hf-btn--ghost {
+    background: transparent; color: var(--sl-color-accent, #9a5b3f);
+    border-color: var(--sl-color-gray-5, #d8d2c4);
+  }
+  .hf-btn--sm { padding: .3rem .6rem; font-size: .82rem; }
+  .hf-auth { margin-bottom: 1.25rem; }
+  .hf-auth__signedout { display: flex; gap: .6rem; }
+  .hf-auth__signedin { font-size: .9rem; color: var(--sl-color-gray-2, #5a5a5a); display: flex; align-items: center; gap: .75rem; }
+  .hf-form {
+    background: var(--sl-color-gray-7, #f4f1ea);
+    border: 1px solid var(--sl-color-gray-5, #d8d2c4);
+    border-radius: 6px; padding: 1.25rem; margin-bottom: 1.5rem;
+  }
+  .hf-form__h { margin: 0 0 .9rem; font-size: 1.1rem; font-family: var(--sl-font-system, "Source Serif 4", Georgia, serif); }
+  .hf-form label { display: block; font-size: .85rem; font-weight: 500; margin-bottom: .8rem; color: var(--sl-color-gray-1, #3a3a3a); }
+  .hf-form label small { font-weight: 400; color: var(--sl-color-gray-3, #777); }
+  .hf-form input, .hf-form textarea {
+    display: block; width: 100%; margin-top: .3rem; font: inherit; font-size: .95rem;
+    padding: .55rem .65rem; border: 1px solid var(--sl-color-gray-5, #d8d2c4);
+    border-radius: 4px; background: var(--sl-color-bg, #fff); color: inherit; box-sizing: border-box;
+  }
+  .hf-form textarea { resize: vertical; min-height: 5rem; }
+  .hf-form__row { display: flex; gap: .6rem; margin-top: .4rem; }
+  .hf-form__err { color: #b3261e; font-size: .85rem; margin: .6rem 0 0; min-height: 1em; }
+  .hf-newcomment { background: transparent; border: none; padding: 0; }
+  .hf-turnstile { margin: .5rem 0; }
+  .hf-list { display: flex; flex-direction: column; gap: 1.1rem; }
+  .hf-empty { color: var(--sl-color-gray-3, #888); font-style: italic; font-size: .92rem; }
+  .hf-comment {
+    border-left: 2px solid var(--sl-color-gray-5, #e0dccf); padding: .1rem 0 .1rem 1rem;
+  }
+  .hf-comment.is-reply { margin-left: 1.5rem; }
+  .hf-comment.is-hidden { opacity: .5; }
+  .hf-comment__meta { font-size: .82rem; color: var(--sl-color-gray-3, #888); margin-bottom: .25rem; }
+  .hf-comment__handle { font-weight: 600; color: var(--sl-color-gray-1, #3a3a3a); }
+  .hf-comment__badge { font-size: .7rem; background: #b3261e; color: #fff; border-radius: 3px; padding: .05rem .35rem; margin-left: .4rem; }
+  .hf-comment__badge--held { background: #b58b00; }
+  .hf-comment__body { font-family: var(--sl-font-system, "Source Serif 4", Georgia, serif); font-size: 1rem; line-height: 1.6; white-space: pre-wrap; color: var(--sl-color-white, #1a1a1a); }
+  .hf-comment__actions { margin-top: .35rem; display: flex; gap: .8rem; }
+  .hf-comment__action { font-size: .78rem; color: var(--sl-color-gray-3, #888); background: none; border: none; cursor: pointer; padding: 0; }
+  .hf-comment__action:hover { color: var(--sl-color-accent, #9a5b3f); text-decoration: underline; }
+  @media (prefers-reduced-motion: reduce) { .hf-btn { transition: none; } }
+</style>
+
+<script is:inline define:vars={{ slug }}>
+  // === CONFIG — set these two before deploying ============================
+  const API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+  const TURNSTILE_SITEKEY = "0x4AAAAAADsA9uyastbroHzf";
+  // ========================================================================
+
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const root = document.querySelector(`.hf-comments[data-slug="${slug}"]`);
+    let token = localStorage.getItem("hf_token");
+    let me = null;            // { handle, is_admin }
+    let tsWidgets = {};       // turnstile widget ids
+
+    // ---- Turnstile loader (Cloudflare's free CAPTCHA) ----
+    function loadTurnstile() {
+      if (window.turnstile || document.getElementById("hf-ts-script")) return;
+      const s = document.createElement("script");
+      s.id = "hf-ts-script";
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      s.async = true; s.defer = true;
+      document.head.appendChild(s);
+    }
+    function renderTurnstile(elId, key) {
+      const el = $(elId);
+      if (!el || !window.turnstile || !TURNSTILE_SITEKEY || TURNSTILE_SITEKEY.startsWith("YOUR_")) return;
+      if (tsWidgets[elId] !== undefined) return;
+      tsWidgets[elId] = window.turnstile.render(el, { sitekey: TURNSTILE_SITEKEY });
+    }
+    function tsToken(elId) {
+      try { return window.turnstile && tsWidgets[elId] !== undefined ? window.turnstile.getResponse(tsWidgets[elId]) : ""; }
+      catch { return ""; }
+    }
+    function tsReset(elId) { try { if (window.turnstile && tsWidgets[elId] !== undefined) window.turnstile.reset(tsWidgets[elId]); } catch {} }
+
+    async function api(path, opts = {}) {
+      const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+      if (token) headers["Authorization"] = "Bearer " + token;
+      const r = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || "Something went wrong.");
+      return data;
+    }
+
+    function esc(s) { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+    function when(iso) { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch { return ""; } }
+
+    // ---- render auth state ----
+    function paintAuth() {
+      const signedIn = !!me;
+      $("hf-signedout").hidden = signedIn;
+      $("hf-signedin").hidden = !signedIn;
+      $("hf-comment-form").hidden = !signedIn;
+      if (signedIn) { $("hf-handle").textContent = me.handle; }
+      if (signedIn) { loadTurnstile(); setTimeout(() => renderTurnstile("hf-comment-turnstile"), 300); }
+    }
+
+    // ---- render comments (threaded one level) ----
+    function paintComments(comments, isAdmin) {
+      const list = $("hf-list");
+      list.innerHTML = "";
+      if (!comments.length) { list.innerHTML = '<p class="hf-empty">Be the first to comment.</p>'; return; }
+      const tops = comments.filter((c) => !c.parent_id);
+      const replies = comments.filter((c) => c.parent_id);
+      const byParent = {};
+      replies.forEach((r) => { (byParent[r.parent_id] = byParent[r.parent_id] || []).push(r); });
+
+      function node(c, isReply) {
+        const el = document.createElement("div");
+        el.className = "hf-comment" + (isReply ? " is-reply" : "") + (c.is_hidden ? " is-hidden" : "");
+        let badges = "";
+        if (c.is_hidden) badges += '<span class="hf-comment__badge">hidden</span>';
+        if (c.auto_held) badges += '<span class="hf-comment__badge hf-comment__badge--held">held for review</span>';
+        if (c.flag_count > 0 && isAdmin) badges += `<span class="hf-comment__badge">${c.flag_count} report(s)</span>`;
+        el.innerHTML =
+          `<div class="hf-comment__meta"><span class="hf-comment__handle">${esc(c.handle)}</span> · ${when(c.created_at)} ${badges}</div>
+           <div class="hf-comment__body">${esc(c.body)}</div>
+           <div class="hf-comment__actions"></div>`;
+        const actions = el.querySelector(".hf-comment__actions");
+        if (me && !isReply) {
+          const reply = document.createElement("button");
+          reply.className = "hf-comment__action"; reply.textContent = "Reply";
+          reply.onclick = () => openReply(c.id, el);
+          actions.appendChild(reply);
+        }
+        if (me) {
+          const flag = document.createElement("button");
+          flag.className = "hf-comment__action"; flag.textContent = "Report";
+          flag.onclick = () => doFlag(c.id);
+          actions.appendChild(flag);
+        }
+        if (isAdmin) {
+          const hide = document.createElement("button");
+          hide.className = "hf-comment__action";
+          hide.textContent = c.is_hidden ? "Unhide" : "Hide";
+          hide.onclick = () => doHide(c.id, !c.is_hidden);
+          actions.appendChild(hide);
+        }
+        return el;
+      }
+
+      tops.forEach((c) => {
+        list.appendChild(node(c, false));
+        (byParent[c.id] || []).forEach((r) => list.appendChild(node(r, true)));
+      });
+    }
+
+    function openReply(parentId, afterEl) {
+      const f = document.createElement("form");
+      f.className = "hf-form hf-newcomment";
+      f.innerHTML = `<textarea rows="3" maxlength="5000" placeholder="Write a reply…"></textarea>
+        <div class="hf-form__row"><button class="hf-btn hf-btn--sm">Reply</button>
+        <button type="button" class="hf-btn hf-btn--ghost hf-btn--sm" data-x>Cancel</button></div>
+        <p class="hf-form__err"></p>`;
+      f.querySelector("[data-x]").onclick = () => f.remove();
+      f.onsubmit = async (e) => {
+        e.preventDefault();
+        const body = f.querySelector("textarea").value.trim();
+        try {
+          await api("/api/comments", { method: "POST",
+            body: JSON.stringify({ slug, body, parent_id: parentId, turnstile: tsToken("hf-comment-turnstile") }) });
+          f.remove(); load();
+        } catch (err) { f.querySelector(".hf-form__err").textContent = err.message; }
+      };
+      afterEl.after(f);
+    }
+
+    async function doFlag(id) {
+      try { await api(`/api/comments/${id}/flag`, { method: "POST", body: JSON.stringify({}) }); alert("Thank you — this comment has been reported to the moderators."); }
+      catch (err) { alert(err.message); }
+    }
+    async function doHide(id, hidden) {
+      try { await api(`/api/admin/comments/${id}/hide`, { method: "POST", body: JSON.stringify({ hidden }) }); load(); }
+      catch (err) { alert(err.message); }
+    }
+
+    // ---- load comments ----
+    async function load() {
+      try {
+        const data = await api(`/api/comments?slug=${encodeURIComponent(slug)}`);
+        paintComments(data.comments, data.isAdmin);
+      } catch (err) { $("hf-list").innerHTML = `<p class="hf-empty">Comments are unavailable right now.</p>`; }
+    }
+
+    // ---- restore session ----
+    async function restore() {
+      if (!token) { paintAuth(); return; }
+      try { const d = await api("/api/me"); me = d.user; }
+      catch { token = null; localStorage.removeItem("hf_token"); me = null; }
+      paintAuth();
+    }
+
+    // ---- wire up forms ----
+    $("hf-show-login").onclick = () => { $("hf-login-form").hidden = false; $("hf-register-form").hidden = true; };
+    $("hf-show-register").onclick = () => {
+      $("hf-register-form").hidden = false; $("hf-login-form").hidden = true;
+      loadTurnstile(); setTimeout(() => renderTurnstile("hf-reg-turnstile"), 300);
+    };
+    root.querySelectorAll("[data-cancel]").forEach((b) => b.onclick = () => { b.closest("form").hidden = true; });
+
+    $("hf-login-form").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const d = await api("/api/login", { method: "POST",
+          body: JSON.stringify({ handle: $("hf-login-handle").value.trim(), password: $("hf-login-pass").value }) });
+        token = d.token; localStorage.setItem("hf_token", token); me = { handle: d.handle, is_admin: d.is_admin };
+        $("hf-login-form").hidden = true; paintAuth(); load();
+      } catch (err) { $("hf-login-err").textContent = err.message; }
+    };
+
+    $("hf-register-form").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const d = await api("/api/register", { method: "POST",
+          body: JSON.stringify({
+            handle: $("hf-reg-handle").value.trim(), email: $("hf-reg-email").value.trim(),
+            password: $("hf-reg-pass").value, turnstile: tsToken("hf-reg-turnstile") }) });
+        token = d.token; localStorage.setItem("hf_token", token); me = { handle: d.handle, is_admin: d.is_admin };
+        $("hf-register-form").hidden = true; paintAuth(); load();
+      } catch (err) { $("hf-reg-err").textContent = err.message; tsReset("hf-reg-turnstile"); }
+    };
+
+    $("hf-comment-form").onsubmit = async (e) => {
+      e.preventDefault();
+      const body = $("hf-comment-body").value.trim();
+      try {
+        await api("/api/comments", { method: "POST",
+          body: JSON.stringify({ slug, body, turnstile: tsToken("hf-comment-turnstile") }) });
+        $("hf-comment-body").value = ""; tsReset("hf-comment-turnstile"); load();
+      } catch (err) { $("hf-comment-err").textContent = err.message; }
+    };
+
+    $("hf-logout").onclick = async () => {
+      try { await api("/api/logout", { method: "POST" }); } catch {}
+      token = null; localStorage.removeItem("hf_token"); me = null; paintAuth(); load();
+    };
+
+    // ---- go ----
+    restore().then(load);
+  })();
+</script>
