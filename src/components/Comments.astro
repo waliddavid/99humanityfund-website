@@ -116,6 +116,9 @@ const { slug } = Astro.props;
   }
   .hf-btn--sm { padding: .3rem .6rem; font-size: .82rem; }
   .hf-auth { margin-bottom: 1.25rem; }
+  /* The `hidden` attribute must win over `display:flex` below, otherwise both
+     the signed-out and signed-in rows render at the same time. */
+  .hf-comments [hidden] { display: none !important; }
   .hf-auth__signedout { display: flex; gap: .6rem; }
   .hf-auth__signedin { font-size: .9rem; color: var(--sl-color-gray-2, #5a5a5a); display: flex; align-items: center; gap: .75rem; }
   .hf-form {
