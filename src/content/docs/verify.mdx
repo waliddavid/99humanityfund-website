@@ -1,0 +1,100 @@
+---
+title: "Verifying your email"
+description: "Confirming your account."
+template: splash
+---
+
+<div class="verify-page">
+  <div class="verify-card" id="verify-card">
+    <p class="verify-status" id="verify-status">Confirming your email…</p>
+    <p class="verify-detail" id="verify-detail"></p>
+    <a href="/" class="verify-link" id="verify-link" hidden>Go to the homepage</a>
+  </div>
+</div>
+
+<style>
+{`
+  .verify-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .verify-card {
+    max-width: 32rem;
+    text-align: center;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .verify-status {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--sl-color-white);
+    margin: 0 0 0.75rem;
+  }
+  .verify-detail {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--sl-color-gray-2);
+    margin: 0 0 1.5rem;
+  }
+  .verify-link {
+    display: inline-block;
+    font-family: var(--sl-font-system, 'Inter', sans-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--sl-color-text-invert, #fff);
+    background: var(--sl-color-accent);
+    padding: 0.7rem 1.6rem;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+  .verify-link:hover { opacity: 0.9; }
+`}
+</style>
+
+<script is:inline>
+  (async function () {
+    const API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+    const statusEl = document.getElementById("verify-status");
+    const detailEl = document.getElementById("verify-detail");
+    const linkEl = document.getElementById("verify-link");
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (!token) {
+      statusEl.textContent = "Invalid link";
+      detailEl.textContent = "This verification link is missing its token. Please use the link from your email exactly as it was sent.";
+      linkEl.hidden = false;
+      return;
+    }
+
+    try {
+      const r = await fetch(API_BASE + "/api/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.token) {
+        // Store the session so they're signed in immediately.
+        try { localStorage.setItem("hf_token", data.token); } catch (e) {}
+        statusEl.textContent = "You're verified!";
+        detailEl.textContent = "Your email is confirmed and you're now signed in. You can head back and join the conversation on any article.";
+        linkEl.textContent = "Start reading";
+        linkEl.hidden = false;
+      } else {
+        statusEl.textContent = "Link expired or already used";
+        detailEl.textContent = (data.error || data.message ||
+          "This verification link is invalid or has already been used.") +
+          " If you've already verified, just sign in. Otherwise, register again to get a fresh link.";
+        linkEl.hidden = false;
+      }
+    } catch (e) {
+      statusEl.textContent = "Something went wrong";
+      detailEl.textContent = "We couldn't confirm your email right now. Please try the link again in a moment.";
+      linkEl.hidden = false;
+    }
+  })();
+</script>
