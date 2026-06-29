@@ -1,0 +1,133 @@
+---
+// Standalone verification page. Lives at src/pages/verify.astro -> served at /verify/
+// Self-contained full HTML document so it does not depend on the Starlight layout.
+// All logic runs client-side: read ?token= , POST to the Worker, show the result.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verifying your email — 99% of Humanity Global Fund</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;600&display=swap');
+      :root {
+        --accent: #6b5d3e;
+        --bg: #1a1812;
+        --white: #fdfcf9;
+        --gray: #bdb6a7;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0; min-height: 100vh;
+        background: var(--bg);
+        font-family: 'Source Serif 4', Georgia, serif;
+        color: var(--white);
+      }
+      .wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .card {
+        max-width: 34rem;
+        text-align: center;
+      }
+      .brand {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--accent);
+        margin: 0 0 1.5rem;
+      }
+      .status {
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 0.9rem;
+      }
+      .detail {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--gray);
+        margin: 0 0 2rem;
+      }
+      .btn {
+        display: inline-block;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        background: var(--accent);
+        padding: 0.8rem 1.8rem;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: opacity 0.15s ease;
+      }
+      .btn:hover { opacity: 0.9; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <p class="brand">99% of Humanity Global Fund</p>
+        <p class="status" id="status">Confirming your email…</p>
+        <p class="detail" id="detail"></p>
+        <a href="/" class="btn" id="link" hidden>Go to the homepage</a>
+      </div>
+    </div>
+
+    <script is:inline>
+      (async function () {
+        var API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+        var statusEl = document.getElementById("status");
+        var detailEl = document.getElementById("detail");
+        var linkEl = document.getElementById("link");
+
+        var params = new URLSearchParams(window.location.search);
+        var token = params.get("token");
+
+        if (!token) {
+          statusEl.textContent = "Invalid link";
+          detailEl.textContent = "This verification link is missing its token. Please use the link from your email exactly as it was sent.";
+          linkEl.hidden = false;
+          return;
+        }
+
+        try {
+          var r = await fetch(API_BASE + "/api/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token })
+          });
+          var data = await r.json().catch(function () { return {}; });
+
+          if (r.ok && data.token) {
+            try { localStorage.setItem("hf_token", data.token); } catch (e) {}
+            statusEl.textContent = "You're verified!";
+            detailEl.textContent = "Your email is confirmed and you're now signed in. Head back and join the conversation on any article.";
+            linkEl.textContent = "Start reading";
+            linkEl.hidden = false;
+          } else {
+            statusEl.textContent = "Link expired or already used";
+            detailEl.textContent = (data.error || data.message ||
+              "This verification link is invalid or has already been used.") +
+              " If you've already verified, just sign in. Otherwise register again to get a fresh link.";
+            linkEl.hidden = false;
+          }
+        } catch (e) {
+          statusEl.textContent = "Something went wrong";
+          detailEl.textContent = "We couldn't confirm your email right now. Please try the link again in a moment.";
+          linkEl.hidden = false;
+        }
+      })();
+    </script>
+  </body>
+</html>
