@@ -48,7 +48,20 @@ const { slug } = Astro.props;
       <button type="button" class="hf-btn hf-btn--ghost" data-cancel>Cancel</button>
     </div>
     <p class="hf-form__err" id="hf-login-err"></p>
+    <button type="button" class="hf-forgot-link" id="hf-forgot-link">Forgot your password?</button>
   </form>
+
+  <!-- Password reset request panel -->
+  <div class="hf-form" id="hf-forgot-panel" hidden>
+    <h3 class="hf-form__h">Reset your password</h3>
+    <p class="hf-forgot-intro">Enter the email you signed up with. If it's registered, we'll send you a link to set a new password.</p>
+    <label>Email <input type="email" id="hf-forgot-email" autocomplete="email" /></label>
+    <div class="hf-form__row">
+      <button type="button" class="hf-btn" id="hf-forgot-send">Send reset link</button>
+      <button type="button" class="hf-btn hf-btn--ghost" id="hf-forgot-cancel">Back</button>
+    </div>
+    <p class="hf-form__err" id="hf-forgot-msg"></p>
+  </div>
 
   <form class="hf-form" id="hf-register-form" hidden>
     <h3 class="hf-form__h">Create an account</h3>
@@ -156,6 +169,16 @@ const { slug } = Astro.props;
     font-size: .95rem;
     line-height: 1.5;
     color: var(--sl-color-gray-1, #f7f5f0);
+  }
+  .hf-forgot-link {
+    background: none; border: none; padding: 0; margin: .75rem 0 0;
+    font-family: inherit; font-size: .85rem; color: var(--sl-color-accent, #6b5d3e);
+    text-decoration: underline; cursor: pointer;
+  }
+  .hf-forgot-link:hover { opacity: .8; }
+  .hf-forgot-intro {
+    font-size: .9rem; line-height: 1.5; color: var(--sl-color-gray-2, #ebe7dd);
+    margin: 0 0 1rem;
   }
   .hf-field-err { color: #b3261e; font-size: .82rem; font-weight: 500; margin: -.4rem 0 .8rem; min-height: 0; }
   .hf-field-err:empty { display: none; }
@@ -373,6 +396,39 @@ const { slug } = Astro.props;
         }
       }
     };
+
+    // ---- forgot password ----
+    if ($("hf-forgot-link")) {
+      $("hf-forgot-link").onclick = () => {
+        $("hf-login-form").hidden = true;
+        $("hf-forgot-panel").hidden = false;
+        $("hf-forgot-msg").textContent = "";
+      };
+    }
+    if ($("hf-forgot-cancel")) {
+      $("hf-forgot-cancel").onclick = () => {
+        $("hf-forgot-panel").hidden = true;
+        $("hf-login-form").hidden = false;
+      };
+    }
+    if ($("hf-forgot-send")) {
+      $("hf-forgot-send").onclick = async () => {
+        const email = $("hf-forgot-email").value.trim();
+        const msg = $("hf-forgot-msg");
+        if (!email || !email.includes("@")) { msg.style.color = "#b3261e"; msg.textContent = "Please enter a valid email."; return; }
+        const btn = $("hf-forgot-send");
+        btn.disabled = true; btn.textContent = "Sending…";
+        try {
+          const d = await api("/api/request-reset", { method: "POST", body: JSON.stringify({ email }) });
+          msg.style.color = "";
+          msg.textContent = d.message || "If an account with that email exists, a reset link is on its way.";
+        } catch (err) {
+          msg.style.color = "";
+          msg.textContent = "If an account with that email exists, a reset link is on its way.";
+        }
+        setTimeout(() => { btn.disabled = false; btn.textContent = "Send reset link"; }, 4000);
+      };
+    }
 
     $("hf-register-form").onsubmit = async (e) => {
       e.preventDefault();
