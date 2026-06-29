@@ -1,0 +1,128 @@
+---
+// Password reset page. Lives at src/pages/reset.astro -> served at /reset/
+// Reads ?token= , lets the user set a new password, POSTs to the Worker.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reset your password — 99% of Humanity Global Fund</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;600&display=swap');
+      :root { --accent: #6b5d3e; --bg: #1a1812; --white: #fdfcf9; --gray: #bdb6a7; }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0; min-height: 100vh;
+        background: var(--bg);
+        font-family: 'Source Serif 4', Georgia, serif;
+        color: var(--white);
+      }
+      .wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+      .card { max-width: 30rem; width: 100%; text-align: center; }
+      .brand {
+        font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.16em; color: var(--accent); margin: 0 0 1.5rem;
+      }
+      .status { font-size: 1.6rem; font-weight: 700; line-height: 1.2; margin: 0 0 0.9rem; }
+      .detail { font-size: 1.05rem; line-height: 1.6; color: var(--gray); margin: 0 0 1.5rem; }
+      label { display: block; text-align: left; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--gray); margin: 0 0 0.4rem; }
+      input {
+        width: 100%; padding: 0.7rem 0.85rem; margin: 0 0 1rem;
+        font-size: 1rem; border-radius: 6px; border: 1px solid #3a3528;
+        background: #0f0e0a; color: var(--white);
+      }
+      .btn {
+        display: inline-block; width: 100%; cursor: pointer;
+        font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
+        color: #fff; background: var(--accent); border: none;
+        padding: 0.8rem 1.8rem; border-radius: 6px; text-decoration: none;
+        transition: opacity 0.15s ease;
+      }
+      .btn:hover { opacity: 0.9; }
+      .btn:disabled { opacity: 0.5; cursor: default; }
+      .err { color: #ff9b8a; font-size: 0.9rem; min-height: 1.1em; margin: 0 0 0.5rem; text-align: left; }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <p class="brand">99% of Humanity Global Fund</p>
+        <p class="status" id="status">Choose a new password</p>
+        <p class="detail" id="detail"></p>
+
+        <div id="form-area">
+          <label for="pw1">New password</label>
+          <input type="password" id="pw1" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" />
+          <label for="pw2">Confirm new password</label>
+          <input type="password" id="pw2" autocomplete="new-password" minlength="8" placeholder="Type it again" />
+          <p class="err" id="err"></p>
+          <button class="btn" id="submit">Set new password</button>
+        </div>
+
+        <a href="/" class="btn" id="link" hidden>Go to the homepage</a>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+        var statusEl = document.getElementById("status");
+        var detailEl = document.getElementById("detail");
+        var formArea = document.getElementById("form-area");
+        var errEl = document.getElementById("err");
+        var linkEl = document.getElementById("link");
+        var submitBtn = document.getElementById("submit");
+
+        var params = new URLSearchParams(window.location.search);
+        var token = params.get("token");
+
+        if (!token) {
+          statusEl.textContent = "Invalid link";
+          detailEl.textContent = "This reset link is missing its token. Please use the link from your email exactly as it was sent.";
+          formArea.hidden = true;
+          linkEl.hidden = false;
+          return;
+        }
+
+        submitBtn.onclick = async function () {
+          errEl.textContent = "";
+          var pw1 = document.getElementById("pw1").value;
+          var pw2 = document.getElementById("pw2").value;
+          if (pw1.length < 8) { errEl.textContent = "Password must be at least 8 characters."; return; }
+          if (pw1 !== pw2) { errEl.textContent = "The two passwords do not match."; return; }
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Saving…";
+          try {
+            var r = await fetch(API_BASE + "/api/do-reset", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token: token, password: pw1 })
+            });
+            var data = await r.json().catch(function () { return {}; });
+            if (r.ok && data.token) {
+              try { localStorage.setItem("hf_token", data.token); } catch (e) {}
+              statusEl.textContent = "Password updated";
+              detailEl.textContent = "Your password has been changed and you're now signed in. You can head back and join the conversation.";
+              formArea.hidden = true;
+              linkEl.textContent = "Start reading";
+              linkEl.hidden = false;
+            } else {
+              errEl.textContent = data.error || data.message || "Something went wrong. The link may have expired.";
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Set new password";
+            }
+          } catch (e) {
+            errEl.textContent = "We couldn't reach the server. Please try again in a moment.";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Set new password";
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>
