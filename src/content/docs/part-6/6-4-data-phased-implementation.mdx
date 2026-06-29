@@ -1,0 +1,61 @@
+---
+title: "Data: Phased Implementation (Year-by-Year Rollout)"
+description: "<p class='dl-row'><a class='dl-button' href='/downloads/phased-implementation.csv' download>↓ Download the full CSV (194 countries, 30 columns)</a></p>"
+template: splash
+prev:
+  link: /part-6/6-3-data-five-scenario-comparison/
+  label: "Article 6-3 — Data: Five-Scenario Comparison"
+next:
+  link: /part-7/7-1-what-stops-the-fund-from-becoming-what-it-replaces/
+  label: "Article 7-1 — What Stops the Fund From Becoming What It Replaces"
+---
+
+import Comments from '../../../components/Comments.astro';
+
+<a href="/part-6/" class="back-to-part">← Back to Part 6</a>
+
+<div class="reading" lang="en">
+
+<p class="article-label">Article 6-4</p>
+
+# Data: Phased Implementation (Year-by-Year Rollout)
+
+<div class="article-hero">
+  <img src="/cards/part-6-4.jpg" alt="Data: Phased Implementation (Year-by-Year Rollout)" />
+</div>
+
+<figure class="article-audio">
+  <figcaption>Audio version — listen instead of reading</figcaption>
+  <audio controls preload="metadata" src="/audio/part-6-4.mp3"></audio>
+</figure>
+
+<p class="dl-row"><a class="dl-button" href="/downloads/phased-implementation.csv" download>↓ Download the full CSV (194 countries, 30 columns)</a></p>
+
+This is the year-by-year rollout file behind the Part 6 timeline. It traces each country's manufacturing employment across a baseline year and five five-year tranches under two scenarios: **Informal Insertion** (the proposed implementation) and **Balanced** (what fuller fairness would require). For each scenario it also gives the per-tranche change (T1 through T5) and the total baseline-to-end change.
+
+The dates are illustrative. Because the fund's own founding phase comes first, the manufacturing relocation begins at The Launch — so the rollout maps to roughly 2032 (baseline) through 2061 (end of Tranche 5), with the relocation planning phase running 2032–2037 and the five tranches following through 2061. A note on the column labels below: the downloadable data file numbers its year-columns from the model's original baseline (2027, 2031, 2036, 2041, 2046, 2051, 2056). Those are stable field identifiers in the data; read them as baseline, end-of-planning, and the five tranche-end milestones, shifted forward by five years to the illustrative calendar above.
+
+All employment figures are in **thousands of jobs**. So China's baseline figure of roughly 215,000 means about 215 million workers. The planning phase (the first two year-columns) shows no employment changes — that's why the first two columns are identical for every country, since Tranche 1 only begins after planning.
+
+## Explore the data
+
+Toggle between the Informal Insertion and Balanced scenarios, sort any column by clicking its header, search by country, and filter by region or income group. Click anywhere on the table — or the button below — to open it full screen.
+
+<p class="dl-row"><a class="fs-button" href="/tables/phased-table-B-full.html" target="_blank" rel="noopener">⤢ Open full screen</a></p>
+
+
+
+{/* INTERACTIVE TABLE: 194-country phased rollout, toggle Informal Insertion / Balanced */}
+
+
+## What the columns mean
+
+The downloadable CSV has 30 columns: identity fields plus two parallel scenario blocks (Informal Insertion and Balanced), each with seven milestone-year values, five per-tranche deltas, and a total delta.
+
+| Column | Meaning | | iso3 | ISO 3166-1 alpha-3 country code. | | un_name | UN member-state name. | | wb_region | World Bank region grouping. | | wb_income_group | World Bank income classification. | | balanced_2027 … balanced_2056 | Manufacturing employment at each milestone year (2027, 2031, 2036, 2041, 2046, 2051, 2056) under the Balanced scenario, in thousands. | | balanced_t1_delta … balanced_t5_delta | Change during each tranche under Balanced — T1 (2031–2036), T2 (2036–2041), T3 (2041–2046), T4 (2046–2051), T5 (2051–2056), in thousands. | | balanced_total_delta | Total change 2027→2056 under Balanced, in thousands. | | informal_insertion_2027 … informal_insertion_2056 | Manufacturing employment at each milestone year under the Informal Insertion scenario (the proposed implementation), in thousands. | | informal_insertion_t1_delta … informal_insertion_t5_delta | Change during each tranche under Informal Insertion, in thousands. | | informal_insertion_total_delta | Total change 2027→2056 under Informal Insertion, in thousands. |
+
+<p class="note-line">Coverage: 194 countries. The planning phase (2027–2031) has no employment changes, so 2027 and 2031 values are identical. Full methodology, tranche sequencing, and scenario definitions are in . Data sources include UN WPP 2024, ILO ILOSTAT, UNIDO INDSTAT, UN Comtrade, World Bank WGI/WDI/LPI, UNESCO UIS, USGS, and the Energy Institute — all consulted May 2026.</p>
+
+<Comments slug="part-6/6-4-data-phased-implementation" />
+
+</div>
