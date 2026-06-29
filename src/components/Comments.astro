@@ -67,6 +67,12 @@ const { slug } = Astro.props;
     <p class="hf-form__err" id="hf-reg-err"></p>
   </form>
 
+  <!-- Verification notice (shown after register, before email is confirmed) -->
+  <div class="hf-verify-notice" id="hf-verify-notice" hidden>
+    <p class="hf-verify-text"></p>
+    <button type="button" class="hf-btn hf-btn--ghost" id="hf-verify-resend">Resend email</button>
+  </div>
+
   <!-- New comment box (only when signed in) -->
   <form class="hf-form hf-newcomment" id="hf-comment-form" hidden>
     <textarea id="hf-comment-body" rows="4" maxlength="5000"
@@ -138,6 +144,19 @@ const { slug } = Astro.props;
   .hf-form textarea { resize: vertical; min-height: 5rem; }
   .hf-form__row { display: flex; gap: .6rem; margin-top: .4rem; }
   .hf-form__err { color: #b3261e; font-size: .88rem; font-weight: 500; margin: .6rem 0 0; min-height: 1em; }
+  .hf-verify-notice {
+    border: 1px solid var(--sl-color-hairline-light, #ebe7dd);
+    border-radius: 8px;
+    background: var(--sl-color-black, #0f0e0a);
+    padding: 1rem 1.1rem;
+    margin: 0 0 1.25rem;
+  }
+  .hf-verify-notice .hf-verify-text {
+    margin: 0 0 .75rem;
+    font-size: .95rem;
+    line-height: 1.5;
+    color: var(--sl-color-gray-1, #f7f5f0);
+  }
   .hf-field-err { color: #b3261e; font-size: .82rem; font-weight: 500; margin: -.4rem 0 .8rem; min-height: 0; }
   .hf-field-err:empty { display: none; }
   .hf-newcomment { background: transparent; border: none; padding: 0; }
@@ -199,7 +218,11 @@ const { slug } = Astro.props;
       if (token) headers["Authorization"] = "Bearer " + token;
       const r = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || "Something went wrong.");
+      if (!r.ok) {
+        const e = new Error(data.error || data.message || "Something went wrong.");
+        e.payload = data;  // expose full body (e.g. unverified flag) to callers
+        throw e;
+      }
       return data;
     }
 
@@ -312,9 +335,9 @@ const { slug } = Astro.props;
     }
 
     // ---- wire up forms ----
-    $("hf-show-login").onclick = () => { $("hf-login-form").hidden = false; $("hf-register-form").hidden = true; };
+    $("hf-show-login").onclick = () => { $("hf-login-form").hidden = false; $("hf-register-form").hidden = true; $("hf-verify-notice").hidden = true; };
     $("hf-show-register").onclick = () => {
-      $("hf-register-form").hidden = false; $("hf-login-form").hidden = true;
+      $("hf-register-form").hidden = false; $("hf-login-form").hidden = true; $("hf-verify-notice").hidden = true;
       loadTurnstile(); setTimeout(() => renderTurnstile("hf-reg-turnstile"), 300);
     };
     root.querySelectorAll("[data-cancel]").forEach((b) => b.onclick = () => { b.closest("form").hidden = true; });
@@ -335,7 +358,20 @@ const { slug } = Astro.props;
           body: JSON.stringify({ handle: $("hf-login-handle").value.trim(), password: $("hf-login-pass").value }) });
         token = d.token; localStorage.setItem("hf_token", token); me = { handle: d.handle, is_admin: d.is_admin };
         $("hf-login-form").hidden = true; paintAuth(); load();
-      } catch (err) { $("hf-login-err").textContent = err.message; }
+      } catch (err) {
+        if (err.payload && err.payload.unverified) {
+          // Show the verify notice with a resend option instead of a plain error.
+          $("hf-login-form").hidden = true;
+          const notice = $("hf-verify-notice");
+          notice.querySelector(".hf-verify-text").textContent =
+            "This account hasn't been verified yet. Check your inbox for the confirmation link, or resend it below.";
+          notice.dataset.handle = $("hf-login-handle").value.trim();
+          notice.dataset.email = "";
+          notice.hidden = false;
+        } else {
+          $("hf-login-err").textContent = err.message;
+        }
+      }
     };
 
     $("hf-register-form").onsubmit = async (e) => {
@@ -366,10 +402,41 @@ const { slug } = Astro.props;
         const d = await api("/api/register", { method: "POST",
           body: JSON.stringify({
             handle, email, password: pass, turnstile: tsToken("hf-reg-turnstile") }) });
+        if (d.pending) {
+          // Account created but must verify email before logging in.
+          $("hf-register-form").hidden = true;
+          const msg = $("hf-verify-notice");
+          msg.querySelector(".hf-verify-text").textContent =
+            d.emailFailed
+              ? "Your account was created, but we couldn't send the verification email. Click below to try again."
+              : "Almost there! We've sent a confirmation link to " + email + ". Click it to activate your account, then sign in.";
+          msg.dataset.handle = handle;
+          msg.dataset.email = email;
+          msg.hidden = false;
+          tsReset("hf-reg-turnstile");
+          return;
+        }
+        // (fallback — shouldn't happen with verification on)
         token = d.token; localStorage.setItem("hf_token", token); me = { handle: d.handle, is_admin: d.is_admin };
         $("hf-register-form").hidden = true; paintAuth(); load();
       } catch (err) { errEl.textContent = err.message; tsReset("hf-reg-turnstile"); }
     };
+
+    // ---- resend verification email ----
+    if ($("hf-verify-resend")) {
+      $("hf-verify-resend").onclick = async () => {
+        const notice = $("hf-verify-notice");
+        const btn = $("hf-verify-resend");
+        btn.disabled = true; btn.textContent = "Sending…";
+        try {
+          await api("/api/resend-verification", { method: "POST",
+            body: JSON.stringify({ handle: notice.dataset.handle, email: notice.dataset.email }) });
+          notice.querySelector(".hf-verify-text").textContent =
+            "A new confirmation link is on its way. Check your inbox (and spam folder).";
+        } catch {}
+        setTimeout(() => { btn.disabled = false; btn.textContent = "Resend email"; }, 4000);
+      };
+    }
 
     $("hf-comment-form").onsubmit = async (e) => {
       e.preventDefault();
