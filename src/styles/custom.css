@@ -349,3 +349,50 @@ header .header .sl-nav-links {
 .sidebar-content a {
 	transition: color 0.15s ease;
 }
+
+/* ============================================================
+   Interactive-widget call-to-action link (used in Article 3-1)
+   Append this to the end of src/styles/custom.css
+   ============================================================ */
+.reading .widget-link {
+  display: block;
+  margin: 2rem 0;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--sl-color-accent, #6b5d3e);
+  border-left: 4px solid var(--sl-color-accent, #6b5d3e);
+  border-radius: 8px;
+  background: rgba(107, 93, 62, 0.05);
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--sl-color-accent, #6b5d3e);
+  text-decoration: none;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.reading .widget-link:hover {
+  background: rgba(107, 93, 62, 0.10);
+  transform: translateY(-1px);
+}
+.reading .widget-link em {
+  font-style: italic;
+  font-weight: 700;
+}
+.reading .widget-link span {
+  display: block;
+  margin-top: 0.35rem;
+  font-weight: 400;
+  font-size: 0.82rem;
+  color: var(--sl-color-text-accent, #7a6f57);
+}
+
+/* Dark mode: lighter accent for contrast */
+:root[data-theme='dark'] .reading .widget-link {
+  border-color: var(--sl-color-accent, #c9a96a);
+  border-left-color: var(--sl-color-accent, #c9a96a);
+  background: rgba(201, 169, 106, 0.08);
+  color: var(--sl-color-accent, #c9a96a);
+}
+:root[data-theme='dark'] .reading .widget-link:hover {
+  background: rgba(201, 169, 106, 0.14);
+}
