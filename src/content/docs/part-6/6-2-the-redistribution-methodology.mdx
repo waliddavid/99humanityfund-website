@@ -59,7 +59,23 @@ Five redistribution scenarios were built to test how outcomes change as we vary 
 
 These scenarios all use a weighted-composite-score approach: each country×category cell gets scored on three dimensions (Equity, Efficiency, Capability) and the redistribution targets are derived by normalizing those composite scores to category-level shares, weighted by working-age population.
 
-| Scenario | Equity Weight | Efficiency Weight | Capability Weight | Redistribution Volume | | Equity-leaning | 60% | 20% | 20% | 176M jobs | | Balanced (philosophical headline) | 40% | 35% | 25% | 151M jobs | | Efficiency-leaning | 20% | 60% | 20% | 129M jobs |
+<table class="data-table">
+  <caption>Weighting of the three philosophical scenarios, and the redistribution volume each produces.</caption>
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Equity weight</th>
+      <th>Efficiency weight</th>
+      <th>Capability weight</th>
+      <th>Redistribution volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Equity-leaning</td><td>60%</td><td>20%</td><td>20%</td><td>176M jobs</td></tr>
+    <tr><td>Balanced (philosophical headline)</td><td>40%</td><td>35%</td><td>25%</td><td>151M jobs</td></tr>
+    <tr><td>Efficiency-leaning</td><td>20%</td><td>60%</td><td>20%</td><td>129M jobs</td></tr>
+  </tbody>
+</table>
 
 **Equity dimension** measures how far each country's current employment share in a category is from its fair share based on its working-age population. India has 16% of the world's working-age population but only 2% of advanced semiconductor employment, so India's equity score in semiconductors is high.
 
@@ -137,17 +153,92 @@ When manufacturing jobs are taken from donor countries, the loss is distributed 
 
 ### 4.1 Country-level shifts (manufacturing employment, millions)
 
-| Country | 2032 (Baseline) | 2042 (end T1) | 2047 (end T2) | 2052 (end T3) | 2057 (end T4) | 2061 (end T5) | ∆ from Baseline | | China | 215.2 | 210.8 | 205.3 | 198.9 | 193.0 | 185.5 | -29.7 | | India | 59.5 | 61.3 | 63.4 | 65.4 | 67.2 | 69.7 | +10.2 | | United States | 15.6 | 15.0 | 14.5 | 13.9 | 13.7 | 13.3 | -2.3 | | Indonesia | 19.1 | 19.6 | 20.4 | 21.0 | 21.5 | 22.2 | +3.1 | | Vietnam | 12.1 | 12.3 | 12.5 | 12.8 | 12.9 | 13.2 | +1.1 | | Brazil | 11.9 | 12.1 | 12.2 | 12.4 | 12.5 | 12.7 | +0.8 | | Pakistan | 11.2 | 11.5 | 12.1 | 12.5 | 13.0 | 13.5 | +2.3 | | Japan | 9.8 | 9.5 | 9.2 | 8.9 | 8.7 | 8.3 | -1.5 | | Bangladesh | 8.1 | 8.5 | 9.0 | 9.3 | 9.7 | 9.9 | +1.8 | | Nigeria | 8.2 | 8.5 | 8.4 | 8.8 | 9.1 | 9.5 | +1.3 | | Germany | 7.6 | 7.6 | 7.6 | 7.7 | 7.7 | 7.8 | +0.1 | | Mexico | 9.7 | 9.8 | 9.9 | 10.2 | 10.3 | 10.6 | +0.9 | | South Africa | 1.7 | 2.3 | 3.0 | 3.7 | 4.3 | 4.9 | +3.2 | | Egypt | 3.9 | 4.1 | 4.2 | 4.3 | 4.5 | 4.6 | +0.7 |
+<div class="wide-table-scroll">
+<table class="data-table wide-table">
+  <caption>Country-level manufacturing employment (millions), baseline to 2061, under Informal Insertion.</caption>
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>2032 (Baseline)</th>
+      <th>2042 (end T1)</th>
+      <th>2047 (end T2)</th>
+      <th>2052 (end T3)</th>
+      <th>2057 (end T4)</th>
+      <th>2061 (end T5)</th>
+      <th>&#8710; from Baseline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>China</td><td>215.2</td><td>210.8</td><td>205.3</td><td>198.9</td><td>193.0</td><td>185.5</td><td>-29.7</td></tr>
+    <tr><td>India</td><td>59.5</td><td>61.3</td><td>63.4</td><td>65.4</td><td>67.2</td><td>69.7</td><td>+10.2</td></tr>
+    <tr><td>United States</td><td>15.6</td><td>15.0</td><td>14.5</td><td>13.9</td><td>13.7</td><td>13.3</td><td>-2.3</td></tr>
+    <tr><td>Indonesia</td><td>19.1</td><td>19.6</td><td>20.4</td><td>21.0</td><td>21.5</td><td>22.2</td><td>+3.1</td></tr>
+    <tr><td>Vietnam</td><td>12.1</td><td>12.3</td><td>12.5</td><td>12.8</td><td>12.9</td><td>13.2</td><td>+1.1</td></tr>
+    <tr><td>Brazil</td><td>11.9</td><td>12.1</td><td>12.2</td><td>12.4</td><td>12.5</td><td>12.7</td><td>+0.8</td></tr>
+    <tr><td>Pakistan</td><td>11.2</td><td>11.5</td><td>12.1</td><td>12.5</td><td>13.0</td><td>13.5</td><td>+2.3</td></tr>
+    <tr><td>Japan</td><td>9.8</td><td>9.5</td><td>9.2</td><td>8.9</td><td>8.7</td><td>8.3</td><td>-1.5</td></tr>
+    <tr><td>Bangladesh</td><td>8.1</td><td>8.5</td><td>9.0</td><td>9.3</td><td>9.7</td><td>9.9</td><td>+1.8</td></tr>
+    <tr><td>Nigeria</td><td>8.2</td><td>8.5</td><td>8.4</td><td>8.8</td><td>9.1</td><td>9.5</td><td>+1.3</td></tr>
+    <tr><td>Germany</td><td>7.6</td><td>7.6</td><td>7.6</td><td>7.7</td><td>7.7</td><td>7.8</td><td>+0.1</td></tr>
+    <tr><td>Mexico</td><td>9.7</td><td>9.8</td><td>9.9</td><td>10.2</td><td>10.3</td><td>10.6</td><td>+0.9</td></tr>
+    <tr><td>South Africa</td><td>1.7</td><td>2.3</td><td>3.0</td><td>3.7</td><td>4.3</td><td>4.9</td><td>+3.2</td></tr>
+    <tr><td>Egypt</td><td>3.9</td><td>4.1</td><td>4.2</td><td>4.3</td><td>4.5</td><td>4.6</td><td>+0.7</td></tr>
+  </tbody>
+</table>
+</div>
 
 ### 4.2 Regional aggregates
 
-| Region | 2032 (Baseline) | 2061 (Final) | ∆ | % change | | South Asia | 70.1M | 82.5M | +12.4M | +18% | | Sub-Saharan Africa | 30.7M | 39.0M | +8.3M | +27% | | MENA + Pakistan/Afghanistan | 28.3M | 33.1M | +4.8M | +17% | | Latin America & Caribbean | 35.8M | 39.1M | +3.3M | +9% | | Europe & Central Asia | 61.6M | 62.1M | +0.5M | +1% | | North America | 17.5M | 14.9M | -2.6M | -15% | | East Asia & Pacific | 279.5M | 252.8M | -26.8M | -10% | | Global | 523.5M | 523.5M | 0M | 0% |
+<table class="data-table">
+  <caption>Regional manufacturing employment, baseline vs. 2061 final, under Informal Insertion.</caption>
+  <thead>
+    <tr>
+      <th>Region</th>
+      <th>2032 (Baseline)</th>
+      <th>2061 (Final)</th>
+      <th>&#8710;</th>
+      <th>% change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>South Asia</td><td>70.1M</td><td>82.5M</td><td>+12.4M</td><td>+18%</td></tr>
+    <tr><td>Sub-Saharan Africa</td><td>30.7M</td><td>39.0M</td><td>+8.3M</td><td>+27%</td></tr>
+    <tr><td>MENA + Pakistan/Afghanistan</td><td>28.3M</td><td>33.1M</td><td>+4.8M</td><td>+17%</td></tr>
+    <tr><td>Latin America &amp; Caribbean</td><td>35.8M</td><td>39.1M</td><td>+3.3M</td><td>+9%</td></tr>
+    <tr><td>Europe &amp; Central Asia</td><td>61.6M</td><td>62.1M</td><td>+0.5M</td><td>+1%</td></tr>
+    <tr><td>North America</td><td>17.5M</td><td>14.9M</td><td>-2.6M</td><td>-15%</td></tr>
+    <tr><td>East Asia &amp; Pacific</td><td>279.5M</td><td>252.8M</td><td>-26.8M</td><td>-10%</td></tr>
+    <tr><td>Global</td><td>523.5M</td><td>523.5M</td><td>0M</td><td>0%</td></tr>
+  </tbody>
+</table>
 
 ### 4.3 Formalization impact
 
 The largest welfare gain from Informal Insertion isn't the 41M redistributed jobs — it's the 33M workers globally who transition from informal to formal manufacturing employment. Globally, informal manufacturing drops from 131M to 98M workers — a 25% reduction.
 
-| Country | Informal mfg % Before | Informal mfg % After | Workers Formalized | | India | 73% | 46% | 10.9M | | Indonesia | 74% | 47% | 3.5M | | Pakistan | 89% | 55% | 2.5M | | Nigeria | 95% | 57% | 1.9M | | Bangladesh | 87% | 54% | 1.8M | | Brazil | 23% | 17% | 0.7M | | Egypt | 65% | 42% | 0.6M | | Mexico | 38% | 26% | 0.9M | | South Africa | 23% | 5% | 0.4M | | Vietnam | 31% | 22% | 0.9M |
+<table class="data-table">
+  <caption>Informal manufacturing share before and after, with workers formalized, under Informal Insertion.</caption>
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Informal mfg % before</th>
+      <th>Informal mfg % after</th>
+      <th>Workers formalized</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>India</td><td>73%</td><td>46%</td><td>10.9M</td></tr>
+    <tr><td>Indonesia</td><td>74%</td><td>47%</td><td>3.5M</td></tr>
+    <tr><td>Pakistan</td><td>89%</td><td>55%</td><td>2.5M</td></tr>
+    <tr><td>Nigeria</td><td>95%</td><td>57%</td><td>1.9M</td></tr>
+    <tr><td>Bangladesh</td><td>87%</td><td>54%</td><td>1.8M</td></tr>
+    <tr><td>Brazil</td><td>23%</td><td>17%</td><td>0.7M</td></tr>
+    <tr><td>Egypt</td><td>65%</td><td>42%</td><td>0.6M</td></tr>
+    <tr><td>Mexico</td><td>38%</td><td>26%</td><td>0.9M</td></tr>
+    <tr><td>South Africa</td><td>23%</td><td>5%</td><td>0.4M</td></tr>
+    <tr><td>Vietnam</td><td>31%</td><td>22%</td><td>0.9M</td></tr>
+  </tbody>
+</table>
 
 ## 5. Implementation Timeline (illustrative: 2032–2061, beginning at The Launch)
 
@@ -253,7 +344,26 @@ The objective maximizes the sum of weight[country, category] × allocation, wher
 
 ### 6.5 Results: concentration reduction
 
-| Sub-region | Current HHI | After Balanced | After Informal Insertion | | East Asia + SE Asia + Oceania | 0.605 | 0.397 (-34%) | 0.570 (-6%) | | South Asia + Middle East | 0.432 | 0.427 (-1%) | 0.500 (+16%) | | Greater North America | 0.408 | 0.410 (&#126;0%) | 0.434 (+6%) | | South America | 0.405 | 0.411 (+1%) | 0.424 (+5%) | | Eurasia | 0.395 | 0.388 (-2%) | 0.412 (+4%) | | West Central Africa | 0.391 | 0.378 (-3%) | 0.399 (+2%) | | Western Europe | 0.373 | 0.371 (-1%) | 0.379 (+2%) |
+<table class="data-table">
+  <caption>Manufacturing concentration (HHI) by sub-region: current vs. after each scenario.</caption>
+  <thead>
+    <tr>
+      <th>Sub-region</th>
+      <th>Current HHI</th>
+      <th>After Balanced</th>
+      <th>After Informal Insertion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>East Asia + SE Asia + Oceania</td><td>0.605</td><td>0.397 (-34%)</td><td>0.570 (-6%)</td></tr>
+    <tr><td>South Asia + Middle East</td><td>0.432</td><td>0.427 (-1%)</td><td>0.500 (+16%)</td></tr>
+    <tr><td>Greater North America</td><td>0.408</td><td>0.410 (&#126;0%)</td><td>0.434 (+6%)</td></tr>
+    <tr><td>South America</td><td>0.405</td><td>0.411 (+1%)</td><td>0.424 (+5%)</td></tr>
+    <tr><td>Eurasia</td><td>0.395</td><td>0.388 (-2%)</td><td>0.412 (+4%)</td></tr>
+    <tr><td>West Central Africa</td><td>0.391</td><td>0.378 (-3%)</td><td>0.399 (+2%)</td></tr>
+    <tr><td>Western Europe</td><td>0.373</td><td>0.371 (-1%)</td><td>0.379 (+2%)</td></tr>
+  </tbody>
+</table>
 
 Under Balanced, the largest concentration reduction occurs in East Asia + SE Asia + Oceania (34% drop in HHI), where China's reduced share allows real diversification across Korea, Japan, Indonesia, Vietnam, Philippines, and other producers. Under Informal Insertion, the change is much smaller because China retains most of its current dominance. Some sub-regions show slight HHI increase under Informal Insertion because the regional optimization shifts allocations toward raw-material-proximate sectors, modestly concentrating production in resource-rich countries.
 
@@ -269,7 +379,29 @@ These specialization maps show that meaningful regional complementarity emerges 
 
 Two parallel implementation timelines are presented in this analysis. **Informal Insertion** is the proposed implementation — the moderate scenario that does the most good for workers without requiring dramatic political upheaval. **Balanced** shows what fully fair allocation would require if the absorption caps were removed. Comparing them reveals the gap between political feasibility and theoretical fairness.
 
-| Country | Baseline (2032) | Informal Insertion 2061 | Balanced 2061 | Gap | | China | 215M | 186M | 72M | 114M | | India | 60M | 70M | 108M | 38M | | USA | 16M | 13M | 30M | 17M | | Vietnam | 12M | 13M | 8M | -5M | | Bangladesh | 8M | 10M | 8M | -2M | | Brazil | 12M | 13M | 16M | 3M | | Pakistan | 11M | 14M | 14M | 0M | | South Africa | 2M | 5M | 5M | 0M | | Philippines | 4M | 3M | 9M | 6M |
+<table class="data-table">
+  <caption>Manufacturing employment by country: Informal Insertion vs. Balanced at 2061, with the gap between them.</caption>
+  <thead>
+    <tr>
+      <th>Country</th>
+      <th>Baseline (2032)</th>
+      <th>Informal Insertion 2061</th>
+      <th>Balanced 2061</th>
+      <th>Gap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>China</td><td>215M</td><td>186M</td><td>72M</td><td>114M</td></tr>
+    <tr><td>India</td><td>60M</td><td>70M</td><td>108M</td><td>38M</td></tr>
+    <tr><td>USA</td><td>16M</td><td>13M</td><td>30M</td><td>17M</td></tr>
+    <tr><td>Vietnam</td><td>12M</td><td>13M</td><td>8M</td><td>-5M</td></tr>
+    <tr><td>Bangladesh</td><td>8M</td><td>10M</td><td>8M</td><td>-2M</td></tr>
+    <tr><td>Brazil</td><td>12M</td><td>13M</td><td>16M</td><td>3M</td></tr>
+    <tr><td>Pakistan</td><td>11M</td><td>14M</td><td>14M</td><td>0M</td></tr>
+    <tr><td>South Africa</td><td>2M</td><td>5M</td><td>5M</td><td>0M</td></tr>
+    <tr><td>Philippines</td><td>4M</td><td>3M</td><td>9M</td><td>6M</td></tr>
+  </tbody>
+</table>
 
 The "Gap" column shows how much further Balanced would push the redistribution beyond Informal Insertion. The 114M-worker gap for China represents the difference between "manageable demographic-style attrition" (Informal Insertion: -0.5%/year) and "profound structural restructuring" (Balanced: -3.0%/year peaking at -10.2%/year in Tranche 5).
 
@@ -293,7 +425,29 @@ Net effect: **a factory in Haiti generates roughly 1/30th the tax revenue for th
 
 Coefficient-of-variation analysis of GDP per capita within each sub-region shows the scale of the problem:
 
-| Sub-region | Min GDP/cap | Max GDP/cap | Max/Min ratio | | South Asia + Middle East | \$420 (Afghanistan) | \$74,401 (Qatar) | 177× | | East Asia + SE Asia + Oceania | \$1,355 (Timor-Leste) | \$94,938 (Singapore) | 70× | | East & Southern Africa | \$228 (Burundi) | \$17,106 (Seychelles) | 75× | | Greater North America | \$2,180 (Haiti) | \$83,951 (USA) | 39× | | West & Central Africa | \$543 (CAR) | \$8,502 (Gabon) | 16× | | Eurasia | \$1,381 (Tajikistan) | \$32,050 (Estonia) | 23× | | South America | \$4,486 (Bolivia) | \$23,892 (Uruguay) | 5.3× | | Southern Europe | \$9,333 (Albania) | \$47,159 (Italy) | 5.1× | | Western Europe | \$51,022 (UK) | \$284,285 (Luxembourg) | 5.6× | | Nordic | \$55,009 (Iceland) | \$88,109 (Norway) | 1.6× |
+<table class="data-table">
+  <caption>GDP per capita range within each sub-region, showing within-region purchasing-power inequality.</caption>
+  <thead>
+    <tr>
+      <th>Sub-region</th>
+      <th>Min GDP/cap</th>
+      <th>Max GDP/cap</th>
+      <th>Max/Min ratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>South Asia + Middle East</td><td>\$420 (Afghanistan)</td><td>\$74,401 (Qatar)</td><td>177&#215;</td></tr>
+    <tr><td>East Asia + SE Asia + Oceania</td><td>\$1,355 (Timor-Leste)</td><td>\$94,938 (Singapore)</td><td>70&#215;</td></tr>
+    <tr><td>East &amp; Southern Africa</td><td>\$228 (Burundi)</td><td>\$17,106 (Seychelles)</td><td>75&#215;</td></tr>
+    <tr><td>Greater North America</td><td>\$2,180 (Haiti)</td><td>\$83,951 (USA)</td><td>39&#215;</td></tr>
+    <tr><td>West &amp; Central Africa</td><td>\$543 (CAR)</td><td>\$8,502 (Gabon)</td><td>16&#215;</td></tr>
+    <tr><td>Eurasia</td><td>\$1,381 (Tajikistan)</td><td>\$32,050 (Estonia)</td><td>23&#215;</td></tr>
+    <tr><td>South America</td><td>\$4,486 (Bolivia)</td><td>\$23,892 (Uruguay)</td><td>5.3&#215;</td></tr>
+    <tr><td>Southern Europe</td><td>\$9,333 (Albania)</td><td>\$47,159 (Italy)</td><td>5.1&#215;</td></tr>
+    <tr><td>Western Europe</td><td>\$51,022 (UK)</td><td>\$284,285 (Luxembourg)</td><td>5.6&#215;</td></tr>
+    <tr><td>Nordic</td><td>\$55,009 (Iceland)</td><td>\$88,109 (Norway)</td><td>1.6&#215;</td></tr>
+  </tbody>
+</table>
 
 ### 8.3 The reframing: needs-proportional tax revenue
 
@@ -339,25 +493,21 @@ The numbers in this document should be recalculated every 5 years (between tranc
 
 - Manufacturing technology evolution (automation, additive manufacturing, AI) is not modeled.
 
-- The fund's role in setting prices, retaining margins below 10%, owning value chains, and managing the transition is acknowledged but not modeled in this analysis. Those questions are addressed in future posts of the New World Order series.
+- The fund's role in setting prices, retaining margins below 10%, owning value chains, and managing the transition is acknowledged but not modeled in this analysis. Those questions are addressed in other parts of the series.
 
-### 9.4 What's deferred to future posts
+### 9.4 Questions addressed elsewhere in the series
 
-Several questions that arose during this analysis are too large for this post and will be addressed in future New World Order series posts:
+Several questions that arose during this analysis are outside the scope of this manufacturing model and are taken up in other articles of the series:
 
-- How the fund competes with private companies and eventually wins through dividend feedback (Part 2)
+- How the fund competes with private companies and eventually wins through the dividend feedback loop. [Cross-ref: [Article 3-2 — Pricing and Competition](/part-3/3-2-pricing-and-competition/); [Article 5-4 — How the Fund Gets Built](/part-5/5-4-how-the-fund-gets-built/).]
 
-- Consumer price changes in high-cost countries when the fund operates at lower margins (Part 4)
+- Consumer price changes in high-cost countries when the fund operates at lower margins, and the mechanism for cross-country wage convergence. [Cross-ref: [Article 3-2 — Pricing and Competition](/part-3/3-2-pricing-and-competition/).]
 
-- The wage-stagnation-plus-price-deflation mechanism for cross-country wage convergence (Part 4)
+- Half-shift work-sharing for cap-bound countries, and service-sector redistribution where applicable — complementary policies noted here as open design questions for the fund's governance to resolve.
 
-- Half-shift work-sharing for cap-bound countries (Part 5)
+- The transition path: pilots, treaties, and political coalitions. [Cross-ref: [Article 5-4 — How the Fund Gets Built](/part-5/5-4-how-the-fund-gets-built/).]
 
-- Service-sector redistribution where applicable (Part 5)
-
-- The transition path: pilots, treaties, political coalitions (Part 6)
-
-- Critiques and failure modes (Part 7)
+- Critiques and failure modes. [Cross-ref: [Article 7-1 — What Stops the Fund From Becoming What It Replaces](/part-7/7-1-what-stops-the-fund-from-becoming-what-it-replaces/); [Article 7-2 — The Honest Failure Modes](/part-7/7-2-the-honest-failure-modes/).]
 
 ## 10. Connection to the \$1 Global Fund
 
@@ -375,13 +525,38 @@ This analysis (Part 6 of the series) is one piece of a broader system being deve
 
 **Component 6 — AI-augmented operations.** Decision support and operational execution at fund scale require AI-augmented systems, transparently designed and democratically accountable.
 
-Together, these components form a coherent proposal: a citizen-owned, democratically-governed global productive system that gradually replaces extractive capitalism with mission-driven citizen-owned production. Manufacturing redistribution is one critical piece. The other pieces require their own development in subsequent posts.
+Together, these components form a coherent proposal: a citizen-owned, democratically-governed global productive system that gradually replaces extractive capitalism with mission-driven citizen-owned production. Manufacturing redistribution is one critical piece. The other pieces are developed in the other articles of the series.
 
 ## 11. Data Sources
 
-| Source | Used for | Date accessed | | UN World Population Prospects 2024 (Medium Variant) | Population projections to 2050 | May 2026 | | ILO ILOSTAT (Files 01, 02a, 02b, 02c, 03) | Manufacturing employment, working-age population, total employment, unemployment rate, informality | May 2026 | | ILO WESO Trends 2025 + May 2025 Update | Global labor force aggregates, regional informal employment shares | May 2026 | | UNIDO INDSTAT (ISIC Rev.4 + Rev.3) | Sectoral employment by ISIC industry code | May 2026 | | UN Comtrade Plus | Trade flows by HS code (2/4/6 digit) | May 2026 | | World Bank WGI | Governance: government effectiveness, regulatory quality | May 2026 | | World Bank WDI | Manufacturing value added (USD), GDP (USD) | May 2026 | | World Bank LPI 2023 | Logistics performance scores (overall + 6 sub-components) | May 2026 | | UNESCO UIS (SDG + OPRI) | Mean years of schooling, STEM/Engineering graduate share, tertiary enrollment, vocational enrollment, and 4 other dimensions | May 2026 | | USGS Mineral Commodity Summaries 2026 | Raw material production by country and commodity | May 2026 | | Energy Institute Statistical Review of World Energy 2025 | Oil, gas, coal production for energy-products category | May 2026 | | FAOSTAT | Agricultural production for food-processing category | May 2026 |
+<div class="wide-table-scroll">
+<table class="data-table wide-table">
+  <caption>Data sources used in this analysis, with what each was used for and the access date.</caption>
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Used for</th>
+      <th>Date accessed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>UN World Population Prospects 2024 (Medium Variant)</td><td>Population projections to 2050</td><td>May 2026</td></tr>
+    <tr><td>ILO ILOSTAT (Files 01, 02a, 02b, 02c, 03)</td><td>Manufacturing employment, working-age population, total employment, unemployment rate, informality</td><td>May 2026</td></tr>
+    <tr><td>ILO WESO Trends 2025 + May 2025 Update</td><td>Global labor force aggregates, regional informal employment shares</td><td>May 2026</td></tr>
+    <tr><td>UNIDO INDSTAT (ISIC Rev.4 + Rev.3)</td><td>Sectoral employment by ISIC industry code</td><td>May 2026</td></tr>
+    <tr><td>UN Comtrade Plus</td><td>Trade flows by HS code (2/4/6 digit)</td><td>May 2026</td></tr>
+    <tr><td>World Bank WGI</td><td>Governance: government effectiveness, regulatory quality</td><td>May 2026</td></tr>
+    <tr><td>World Bank WDI</td><td>Manufacturing value added (USD), GDP (USD)</td><td>May 2026</td></tr>
+    <tr><td>World Bank LPI 2023</td><td>Logistics performance scores (overall + 6 sub-components)</td><td>May 2026</td></tr>
+    <tr><td>UNESCO UIS (SDG + OPRI)</td><td>Mean years of schooling, STEM/Engineering graduate share, tertiary enrollment, vocational enrollment, and 4 other dimensions</td><td>May 2026</td></tr>
+    <tr><td>USGS Mineral Commodity Summaries 2026</td><td>Raw material production by country and commodity</td><td>May 2026</td></tr>
+    <tr><td>Energy Institute Statistical Review of World Energy 2025</td><td>Oil, gas, coal production for energy-products category</td><td>May 2026</td></tr>
+    <tr><td>FAOSTAT</td><td>Agricultural production for food-processing category</td><td>May 2026</td></tr>
+  </tbody>
+</table>
+</div>
 
-**Replication:** All intermediate data tables and the final five-scenario comparison are available as downloadable CSV files. The complete dataset is 5,820 country×category cells (194 countries × 30 categories) with full transparency on data provenance per cell (INDSTAT Rev.4, INDSTAT Rev.3, Comtrade proxy, or peer proxy). Additional outputs: regional optimization allocations (LP solver output), specialization maps per sub-region, and merged sub-region assignments. See [6.3 — Five-Scenario Comparison Data](/part-6/data-five-scenario-comparison/) and [6.4 — Phased Implementation Data](/part-6/data-phased-implementation/).
+**Replication:** All intermediate data tables and the final five-scenario comparison are available as downloadable CSV files. The complete dataset is 5,820 country×category cells (194 countries × 30 categories) with full transparency on data provenance per cell (INDSTAT Rev.4, INDSTAT Rev.3, Comtrade proxy, or peer proxy). Additional outputs: regional optimization allocations (LP solver output), specialization maps per sub-region, and merged sub-region assignments. See [Article 6-3 — Five-Scenario Comparison Data](/part-6/6-3-data-five-scenario-comparison/) and [Article 6-4 — Phased Implementation Data](/part-6/6-4-data-phased-implementation/).
 
 ## 12. Closing Note
 
@@ -395,7 +570,7 @@ The point isn't to predict 2061. It's to demonstrate that we have the methodolog
 
 *Walid David + Claude AI · May 2026*
 
-<style> {` .reading h3 { font-family: Georgia, 'Source Serif 4', serif; font-size: 1.18rem; font-weight: 600; color: var(--sl-color-white); margin: 1.8rem 0 0.6rem; padding: 0; line-height: 1.3; } .dl-row { margin: 1.25rem 0 1.75rem; } .dl-button { display: inline-block; font-family: Georgia, 'Source Serif 4', serif; font-size: 0.95rem; font-weight: 600; text-decoration: none; color: var(--sl-color-white); background: var(--sl-color-accent); padding: 0.6rem 1.1rem; border-radius: 8px; transition: opacity 0.18s ease; } .dl-button:hover { opacity: 0.85; } .exec-summary { border: 1px solid var(--sl-color-hairline-light); border-left: 4px solid var(--sl-color-accent); border-radius: 8px; background: var(--sl-color-gray-7, rgba(255,255,255,0.02)); padding: 1.1rem 1.3rem 1.2rem; margin: 1.75rem 0; } .exec-summary .exec-title { font-family: Georgia, 'Source Serif 4', serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sl-color-accent); margin: 0 0 0.7rem; } .exec-summary ul { margin: 0; padding-left: 1.1rem; } .exec-summary li { font-family: Georgia, 'Source Serif 4', serif; font-size: 0.95rem; line-height: 1.5; color: var(--sl-color-gray-1); margin: 0.25rem 0; } blockquote.callout { border-left: 4px solid var(--sl-color-accent); background: var(--sl-color-gray-7, rgba(255,255,255,0.02)); padding: 0.9rem 1.2rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; color: var(--sl-color-gray-1); } `} </style>
+<style> {` .reading h3 { font-family: Georgia, 'Source Serif 4', serif; font-size: 1.18rem; font-weight: 600; color: var(--sl-color-white); margin: 1.8rem 0 0.6rem; padding: 0; line-height: 1.3; } .wide-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; } .wide-table { min-width: 640px; } .wide-table th, .wide-table td { white-space: nowrap; } .wide-table td:first-child, .wide-table th:first-child { white-space: normal; } .dl-row { margin: 1.25rem 0 1.75rem; } .dl-button { display: inline-block; font-family: Georgia, 'Source Serif 4', serif; font-size: 0.95rem; font-weight: 600; text-decoration: none; color: var(--sl-color-white); background: var(--sl-color-accent); padding: 0.6rem 1.1rem; border-radius: 8px; transition: opacity 0.18s ease; } .dl-button:hover { opacity: 0.85; } .exec-summary { border: 1px solid var(--sl-color-hairline-light); border-left: 4px solid var(--sl-color-accent); border-radius: 8px; background: var(--sl-color-gray-7, rgba(255,255,255,0.02)); padding: 1.1rem 1.3rem 1.2rem; margin: 1.75rem 0; } .exec-summary .exec-title { font-family: Georgia, 'Source Serif 4', serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sl-color-accent); margin: 0 0 0.7rem; } .exec-summary ul { margin: 0; padding-left: 1.1rem; } .exec-summary li { font-family: Georgia, 'Source Serif 4', serif; font-size: 0.95rem; line-height: 1.5; color: var(--sl-color-gray-1); margin: 0.25rem 0; } blockquote.callout { border-left: 4px solid var(--sl-color-accent); background: var(--sl-color-gray-7, rgba(255,255,255,0.02)); padding: 0.9rem 1.2rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; font-style: italic; color: var(--sl-color-gray-1); } `} </style>
 
 <Comments slug="part-6/6-2-the-redistribution-methodology" />
 
