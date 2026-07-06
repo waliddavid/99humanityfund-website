@@ -1,0 +1,130 @@
+---
+// src/components/SocialIcons.astro
+// ---------------------------------------------------------------------------
+// Overrides Starlight's SocialIcons component to add a sign-in / account
+// control on the RIGHT side of the header, alongside the default social icons.
+//
+// This is the SAFE override pattern from Starlight's official docs
+// (starlight.astro.build/guides/overriding-components/, retrieved 2026-07-06):
+// we render Starlight's <Default> so ALL built-in header UI is preserved
+// (search, theme toggle, social icons), then add our own element next to it.
+//
+// It shows:
+//   - "Sign in"  when logged out  -> links to /join/?next=<current page>
+//   - "<handle>  Sign out"  when logged in
+//
+// Register this in astro.config.mjs:
+//   components: { SocialIcons: './src/components/SocialIcons.astro' }
+//
+// CONFIRMED VALUES (from Comments.astro, 2026-07-06):
+//   API_BASE  = https://humanityfund-comments.walid-david.workers.dev
+//   token key = hf_token
+// ---------------------------------------------------------------------------
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+<div class="hf-nav-auth" id="hf-nav-auth" hidden>
+  <!-- Logged OUT -->
+  <a class="hf-nav-btn" id="hf-nav-signin" href="/join/">Sign in</a>
+  <!-- Logged IN -->
+  <span class="hf-nav-signedin" id="hf-nav-signedin" hidden>
+    <a class="hf-nav-handle" id="hf-nav-handle" href="/join/"></a>
+    <button class="hf-nav-signout" id="hf-nav-signout" type="button">Sign out</button>
+  </span>
+</div>
+
+<style>
+  .hf-nav-auth {
+    display: flex; align-items: center; gap: .6rem;
+    margin-inline-start: .5rem;
+    font-family: var(--sl-font, "Inter", system-ui, sans-serif);
+  }
+  .hf-nav-btn {
+    font-size: .82rem; font-weight: 500; text-decoration: none;
+    background: var(--sl-color-accent, #6b5d3e); color: #fff;
+    border-radius: 5px; padding: .35rem .7rem; white-space: nowrap;
+    line-height: 1.4;
+  }
+  .hf-nav-btn:hover { opacity: .9; }
+  .hf-nav-signedin { display: flex; align-items: center; gap: .55rem; }
+  .hf-nav-handle {
+    font-size: .82rem; font-weight: 600; text-decoration: none;
+    color: var(--sl-color-text, #1a1812); white-space: nowrap;
+  }
+  .hf-nav-handle:hover { text-decoration: underline; }
+  .hf-nav-signout {
+    font: inherit; font-size: .78rem; cursor: pointer;
+    background: transparent; color: var(--sl-color-accent, #6b5d3e);
+    border: 1px solid var(--sl-color-gray-5, #d8d2c4);
+    border-radius: 4px; padding: .25rem .55rem; white-space: nowrap;
+  }
+  .hf-nav-signout:hover { opacity: .85; }
+  /* On very narrow screens, keep it compact. */
+  @media (max-width: 30rem) {
+    .hf-nav-handle { max-width: 8ch; overflow: hidden; text-overflow: ellipsis; }
+  }
+</style>
+
+<script is:inline>
+  // === CONFIG — confirmed from Comments.astro (2026-07-06) ================
+  const HF_API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+  // ========================================================================
+  (function () {
+    const wrap = document.getElementById("hf-nav-auth");
+    if (!wrap) return;
+    const signinLink = document.getElementById("hf-nav-signin");
+    const signedin   = document.getElementById("hf-nav-signedin");
+    const handleEl   = document.getElementById("hf-nav-handle");
+    const signoutBtn = document.getElementById("hf-nav-signout");
+
+    let token = localStorage.getItem("hf_token");
+
+    // Make "Sign in" return to the current page after signing in.
+    const here = location.pathname + location.search;
+    signinLink.href = "/join/?next=" + encodeURIComponent(here);
+
+    function showLoggedOut() {
+      signedin.hidden = true;
+      signinLink.hidden = false;
+      wrap.hidden = false;
+    }
+    function showLoggedIn(handle) {
+      signinLink.hidden = true;
+      handleEl.textContent = handle;
+      signedin.hidden = false;
+      wrap.hidden = false;
+    }
+
+    async function whoAmI() {
+      if (!token) { showLoggedOut(); return; }
+      try {
+        const r = await fetch(HF_API_BASE + "/api/me", {
+          headers: { "Authorization": "Bearer " + token },
+        });
+        const d = await r.json().catch(() => ({}));
+        if (d.user) { showLoggedIn(d.user.handle); }
+        else { token = null; localStorage.removeItem("hf_token"); showLoggedOut(); }
+      } catch { showLoggedOut(); }
+    }
+
+    // Sign out: same as Comments.astro — call /api/logout, clear token,
+    // then stay on the same page (just refresh the button state).
+    signoutBtn.onclick = async () => {
+      try {
+        await fetch(HF_API_BASE + "/api/logout", {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + (token || "") },
+        });
+      } catch {}
+      token = null;
+      localStorage.removeItem("hf_token");
+      showLoggedOut();
+      // Refresh so any on-page comment widget also updates its state.
+      location.reload();
+    };
+
+    whoAmI();
+  })();
+</script>
