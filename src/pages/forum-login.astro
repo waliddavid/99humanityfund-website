@@ -1,0 +1,140 @@
+---
+// src/pages/forum-login.astro
+// ---------------------------------------------------------------------------
+// SSO BRIDGE PAGE for Discourse (DiscourseConnect).
+//
+// This page is NOT part of the Starlight docs layout — it is a bare utility
+// page. It must live at exactly: src/pages/forum-login.astro
+//
+// FLOW:
+//   1. Visitor clicks "Community" -> Discourse -> Worker /api/sso (GET)
+//   2. Worker verifies Discourse's signature, then redirects the browser HERE:
+//        /forum-login/?sso=...&sig=...
+//   3. This page reads the login token (hf_token) from localStorage and POSTs
+//      it + the sso/sig back to the Worker's /api/sso endpoint.
+//   4. Logged in  -> Worker returns the final Discourse redirect URL; we go there.
+//      Not logged in -> we send them to the sign-in page first, then return here.
+//
+// CONFIRMED VALUES (do not change unless your setup changes):
+//   Worker base : https://humanityfund-comments.walid-david.workers.dev
+//   Token key   : hf_token
+//   Sign-in page: /join/  (the dedicated page below, forum-signin.astro)
+// ---------------------------------------------------------------------------
+
+const WORKER_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+const SIGNIN_PATH = "/join/";
+const TOKEN_KEY   = "hf_token";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connecting you to the community…</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root { color-scheme: light; }
+      body {
+        margin: 0; min-height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        background: #f7f3ea; color: #1a1812;
+        font-family: "Source Serif 4", Georgia, serif;
+      }
+      .card { max-width: 420px; text-align: center; padding: 40px 28px; }
+      .spinner {
+        width: 34px; height: 34px; margin: 0 auto 22px;
+        border: 3px solid #d8cfba; border-top-color: #6b5d3e;
+        border-radius: 50%; animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      h1 { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+      p  { font-size: 15px; line-height: 1.6; color: #5b5344; margin: 0; }
+      a  { color: #6b5d3e; }
+      .hidden { display: none; }
+      .btn {
+        display: inline-block; margin-top: 18px; padding: 10px 22px;
+        background: #6b5d3e; color: #fff; text-decoration: none;
+        border-radius: 6px; font-family: Inter, system-ui, sans-serif; font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="spinner" id="spin"></div>
+      <div id="working">
+        <h1>Connecting you to the community…</h1>
+        <p>One moment while we sign you in.</p>
+      </div>
+
+      <div id="need-login" class="hidden">
+        <h1>Please sign in first</h1>
+        <p>You need a free account to join the community discussion.
+           We'll bring you right back afterward.</p>
+        <a class="btn" id="login-link" href="#">Sign in or create an account</a>
+      </div>
+
+      <div id="failed" class="hidden">
+        <h1>Something went wrong</h1>
+        <p>We couldn't connect you to the community. Please
+           <a href="/">return home</a> and try again.</p>
+      </div>
+    </div>
+
+    <script define:vars={{ WORKER_BASE, SIGNIN_PATH, TOKEN_KEY }}>
+      (async () => {
+        const params = new URLSearchParams(window.location.search);
+        const sso = params.get("sso");
+        const sig = params.get("sig");
+
+        const show = (id) => {
+          document.getElementById("spin").style.display = "none";
+          document.getElementById("working").style.display = "none";
+          document.getElementById(id).classList.remove("hidden");
+        };
+
+        if (!sso || !sig) { show("failed"); return; }
+
+        const token = localStorage.getItem(TOKEN_KEY);
+
+        // Build the "come back here after login" URL once.
+        const backHere =
+          "/forum-login/?sso=" + encodeURIComponent(sso) +
+          "&sig=" + encodeURIComponent(sig);
+
+        // Not logged in -> go sign in, then return to finish SSO.
+        if (!token) {
+          const dest = SIGNIN_PATH + "?next=" + encodeURIComponent(backHere);
+          document.getElementById("login-link").href = dest;
+          show("need-login");
+          setTimeout(() => { window.location.href = dest; }, 1400);
+          return;
+        }
+
+        try {
+          const res = await fetch(WORKER_BASE + "/api/sso", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer " + token,
+            },
+            body: JSON.stringify({ sso, sig }),
+          });
+          const data = await res.json();
+
+          if (data.loggedIn && data.redirect) {
+            window.location.href = data.redirect;          // -> into Discourse
+          } else if (data.loggedIn === false) {
+            // Token was stale/expired -> treat as "please log in".
+            window.location.href =
+              SIGNIN_PATH + "?next=" + encodeURIComponent(backHere);
+          } else {
+            show("failed");
+          }
+        } catch (e) {
+          show("failed");
+        }
+      })();
+    </script>
+  </body>
+</html>
