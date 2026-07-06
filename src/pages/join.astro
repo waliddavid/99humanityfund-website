@@ -1,0 +1,326 @@
+---
+// src/pages/join.astro
+// ---------------------------------------------------------------------------
+// DEDICATED SIGN-IN / REGISTER PAGE  ->  served at /join/
+//
+// Reuses the EXACT login/register logic + Turnstile config from your
+// Comments.astro so behaviour and look match the article forms.
+//
+// Adds ONE thing the article forms don't have: ?next= support.
+//   /join/?next=%2Fforum-login%2F%3Fsso%3D...   ->  after a successful sign-in
+//   (or after a successful email-verified login), the browser is sent to that
+//   `next` URL. This is how the forum SSO flow returns the user to finish.
+//
+// If there is no ?next=, a successful sign-in just shows a "you're signed in"
+// confirmation with a link home.
+//
+// CONFIRMED VALUES (from Comments.astro, uploaded 2026-07-06):
+//   API_BASE           = https://humanityfund-comments.walid-david.workers.dev
+//   TURNSTILE_SITEKEY  = 0x4AAAAAADsA9uyastbroHzf
+//   token key          = hf_token
+// ---------------------------------------------------------------------------
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in — 99% of Humanity Global Fund</title>
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="/styles/custom.css" />
+    <link rel="stylesheet" href="/styles/reading.css" />
+    <style>
+      :root { color-scheme: light; }
+      body {
+        margin: 0; min-height: 100vh; background: #f7f3ea; color: #1a1812;
+        font-family: "Inter", system-ui, sans-serif;
+        display: flex; align-items: flex-start; justify-content: center;
+        padding: 3.5rem 1rem;
+      }
+      .wrap { width: 100%; max-width: 30rem; }
+      .brand {
+        text-align: center; margin-bottom: 1.75rem;
+        font-family: "Source Serif 4", Georgia, serif;
+      }
+      .brand a { color: #1a1812; text-decoration: none; }
+      .brand h1 { font-size: 1.35rem; font-weight: 600; margin: 0; line-height: 1.3; }
+      .brand p { font-size: .85rem; color: #7d7666; margin: .4rem 0 0; }
+
+      .tabs { display: flex; gap: .5rem; margin-bottom: 1.1rem; }
+      .tab {
+        flex: 1; font: inherit; font-size: .9rem; font-weight: 500;
+        padding: .55rem; cursor: pointer; border-radius: 5px;
+        border: 1px solid #d8d2c4; background: #fff; color: #6b5d3e;
+      }
+      .tab[aria-selected="true"] { background: #6b5d3e; color: #fff; border-color: #6b5d3e; }
+
+      .card {
+        background: #fff; border: 1px solid #d8d2c4; border-radius: 8px;
+        padding: 1.4rem;
+      }
+      .card h2 { margin: 0 0 1rem; font-size: 1.1rem;
+        font-family: "Source Serif 4", Georgia, serif; }
+      label { display: block; font-size: .85rem; font-weight: 500;
+        margin-bottom: .85rem; color: #3a3a3a; }
+      label small { font-weight: 400; color: #9a927f; }
+      input {
+        display: block; width: 100%; margin-top: .3rem; font: inherit; font-size: .95rem;
+        padding: .55rem .65rem; border: 1px solid #d8d2c4; border-radius: 4px;
+        background: #fff; color: inherit; box-sizing: border-box;
+      }
+      .btn {
+        font: inherit; font-size: .92rem; font-weight: 500; background: #6b5d3e;
+        color: #fff; border: 1px solid transparent; border-radius: 5px;
+        padding: .6rem 1.1rem; cursor: pointer; width: 100%; margin-top: .3rem;
+      }
+      .btn:hover { opacity: .9; }
+      .btn--ghost { background: transparent; color: #6b5d3e; border-color: #d8d2c4; }
+      .ts { margin: .6rem 0; }
+      .err { color: #b3261e; font-size: .88rem; font-weight: 500; margin: .6rem 0 0; min-height: 1em; }
+      .field-err { color: #b3261e; font-size: .82rem; margin: -.5rem 0 .8rem; }
+      .field-err:empty { display: none; }
+      .muted-link { background: none; border: none; padding: 0; margin: .8rem 0 0;
+        color: #6b5d3e; text-decoration: underline; font: inherit; font-size: .85rem; cursor: pointer; }
+      .notice { background: #f4f1ea; border: 1px solid #d8d2c4; border-radius: 8px;
+        padding: 1.1rem; font-size: .95rem; line-height: 1.55; }
+      .hidden { display: none !important; }
+      .back { display: block; text-align: center; margin-top: 1.25rem;
+        font-size: .85rem; color: #7d7666; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="brand">
+        <a href="/"><h1>99% of Humanity Global Fund</h1></a>
+        <p>Sign in to join the conversation and the community.</p>
+      </div>
+
+      <!-- Signed-in confirmation (only when already logged in and no next=) -->
+      <div class="notice hidden" id="already">
+        You're signed in as <strong id="already-handle"></strong>.
+        <div style="margin-top:.8rem;">
+          <a class="btn" href="/" style="display:inline-block;width:auto;text-decoration:none;">Continue</a>
+        </div>
+      </div>
+
+      <div id="auth-ui">
+        <div class="tabs">
+          <button class="tab" id="tab-login" aria-selected="true">Sign in</button>
+          <button class="tab" id="tab-register" aria-selected="false">Create an account</button>
+        </div>
+
+        <!-- LOGIN -->
+        <form class="card" id="login-form">
+          <h2>Sign in</h2>
+          <label>Handle <input type="text" id="login-handle" autocomplete="username" /></label>
+          <label>Password <input type="password" id="login-pass" autocomplete="current-password" /></label>
+          <button type="submit" class="btn">Sign in</button>
+          <p class="err" id="login-err"></p>
+          <button type="button" class="muted-link" id="forgot-link">Forgot your password?</button>
+        </form>
+
+        <!-- FORGOT PASSWORD -->
+        <div class="card hidden" id="forgot-panel">
+          <h2>Reset your password</h2>
+          <p style="font-size:.9rem;line-height:1.5;color:#5b5344;margin:0 0 1rem;">
+            Enter the email you signed up with. If it's registered, we'll send a link to set a new password.</p>
+          <label>Email <input type="email" id="forgot-email" autocomplete="email" /></label>
+          <button type="button" class="btn" id="forgot-send">Send reset link</button>
+          <button type="button" class="btn btn--ghost" id="forgot-cancel" style="margin-top:.5rem;">Back</button>
+          <p class="err" id="forgot-msg" style="color:#3a3a3a;"></p>
+        </div>
+
+        <!-- REGISTER -->
+        <form class="card hidden" id="register-form">
+          <h2>Create an account</h2>
+          <label>Handle <small>(3–24 letters, numbers, _ or - — no dots or spaces; shown publicly)</small>
+            <input type="text" id="reg-handle" autocomplete="username" /></label>
+          <p class="field-err" id="reg-handle-err"></p>
+          <label>Email <small>(private — only for reply notifications)</small>
+            <input type="email" id="reg-email" autocomplete="email" /></label>
+          <label>Password <small>(at least 8 characters)</small>
+            <input type="password" id="reg-pass" autocomplete="new-password" /></label>
+          <div class="ts" id="reg-turnstile"></div>
+          <button type="submit" class="btn">Create account</button>
+          <p class="err" id="reg-err"></p>
+        </form>
+
+        <!-- VERIFY NOTICE -->
+        <div class="notice hidden" id="verify-notice" style="margin-top:1rem;">
+          <p class="verify-text" style="margin:0 0 .75rem;"></p>
+          <button type="button" class="btn btn--ghost" id="verify-resend" style="width:auto;">Resend email</button>
+        </div>
+      </div>
+
+      <a class="back" href="/">← Back to the essays</a>
+    </div>
+
+    <script is:inline>
+      // === CONFIG — confirmed from Comments.astro (2026-07-06) ==============
+      const API_BASE = "https://humanityfund-comments.walid-david.workers.dev";
+      const TURNSTILE_SITEKEY = "0x4AAAAAADsA9uyastbroHzf";
+      // =====================================================================
+
+      (function () {
+        const $ = (id) => document.getElementById(id);
+        let token = localStorage.getItem("hf_token");
+        let tsWidget;
+
+        // Where to go after a successful sign-in.
+        const nextParam = new URLSearchParams(location.search).get("next");
+        const goNext = () => {
+          if (nextParam) { location.href = nextParam; }
+          else { $("auth-ui").classList.add("hidden"); }
+        };
+
+        // ---- Turnstile (same as Comments.astro) ----
+        function loadTurnstile() {
+          if (window.turnstile || document.getElementById("hf-ts-script")) return;
+          const s = document.createElement("script");
+          s.id = "hf-ts-script";
+          s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+          s.async = true; s.defer = true;
+          document.head.appendChild(s);
+        }
+        function renderTurnstile() {
+          const el = $("reg-turnstile");
+          if (!el || !window.turnstile || tsWidget !== undefined) return;
+          tsWidget = window.turnstile.render(el, { sitekey: TURNSTILE_SITEKEY });
+        }
+        function tsToken() {
+          try { return window.turnstile && tsWidget !== undefined ? window.turnstile.getResponse(tsWidget) : ""; }
+          catch { return ""; }
+        }
+        function tsReset() { try { if (window.turnstile && tsWidget !== undefined) window.turnstile.reset(tsWidget); } catch {} }
+
+        async function api(path, opts = {}) {
+          const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
+          if (token) headers["Authorization"] = "Bearer " + token;
+          const r = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+          const data = await r.json().catch(() => ({}));
+          if (!r.ok) { const e = new Error(data.error || data.message || "Something went wrong."); e.payload = data; throw e; }
+          return data;
+        }
+
+        // ---- if already signed in ----
+        (async () => {
+          if (token) {
+            try {
+              const d = await api("/api/me");
+              if (d.user) {
+                // Already signed in. If we have a next=, go straight there.
+                if (nextParam) { location.href = nextParam; return; }
+                $("auth-ui").classList.add("hidden");
+                $("already").classList.remove("hidden");
+                $("already-handle").textContent = d.user.handle;
+                return;
+              }
+            } catch { token = null; localStorage.removeItem("hf_token"); }
+          }
+        })();
+
+        // ---- tab switching ----
+        $("tab-login").onclick = () => {
+          $("tab-login").setAttribute("aria-selected", "true");
+          $("tab-register").setAttribute("aria-selected", "false");
+          $("login-form").classList.remove("hidden");
+          $("register-form").classList.add("hidden");
+          $("forgot-panel").classList.add("hidden");
+          $("verify-notice").classList.add("hidden");
+        };
+        $("tab-register").onclick = () => {
+          $("tab-register").setAttribute("aria-selected", "true");
+          $("tab-login").setAttribute("aria-selected", "false");
+          $("register-form").classList.remove("hidden");
+          $("login-form").classList.add("hidden");
+          $("forgot-panel").classList.add("hidden");
+          $("verify-notice").classList.add("hidden");
+          loadTurnstile(); setTimeout(renderTurnstile, 300);
+        };
+
+        // ---- live handle validation ----
+        $("reg-handle").addEventListener("input", () => {
+          const v = $("reg-handle").value.trim();
+          const he = $("reg-handle-err");
+          if (!v || /^[A-Za-z0-9_-]{3,24}$/.test(v)) he.textContent = "";
+          else he.textContent = "No dots, spaces or symbols — only letters, numbers, _ or -.";
+        });
+
+        // ---- login ----
+        $("login-form").onsubmit = async (e) => {
+          e.preventDefault();
+          try {
+            const d = await api("/api/login", { method: "POST",
+              body: JSON.stringify({ handle: $("login-handle").value.trim(), password: $("login-pass").value }) });
+            token = d.token; localStorage.setItem("hf_token", token);
+            goNext();
+          } catch (err) {
+            if (err.payload && err.payload.unverified) {
+              $("login-form").classList.add("hidden");
+              const n = $("verify-notice");
+              n.querySelector(".verify-text").textContent =
+                "This account hasn't been verified yet. Check your inbox for the confirmation link, or resend it below.";
+              n.dataset.handle = $("login-handle").value.trim(); n.dataset.email = "";
+              n.classList.remove("hidden");
+            } else { $("login-err").textContent = err.message; }
+          }
+        };
+
+        // ---- forgot password ----
+        $("forgot-link").onclick = () => { $("login-form").classList.add("hidden"); $("forgot-panel").classList.remove("hidden"); $("forgot-msg").textContent = ""; };
+        $("forgot-cancel").onclick = () => { $("forgot-panel").classList.add("hidden"); $("login-form").classList.remove("hidden"); };
+        $("forgot-send").onclick = async () => {
+          const email = $("forgot-email").value.trim();
+          const msg = $("forgot-msg");
+          if (!email || !email.includes("@")) { msg.textContent = "Please enter a valid email."; return; }
+          const btn = $("forgot-send"); btn.disabled = true; btn.textContent = "Sending…";
+          try { const d = await api("/api/request-reset", { method: "POST", body: JSON.stringify({ email }) });
+            msg.textContent = d.message || "If an account with that email exists, a reset link is on its way."; }
+          catch { msg.textContent = "If an account with that email exists, a reset link is on its way."; }
+          setTimeout(() => { btn.disabled = false; btn.textContent = "Send reset link"; }, 4000);
+        };
+
+        // ---- register ----
+        $("register-form").onsubmit = async (e) => {
+          e.preventDefault();
+          const errEl = $("reg-err"); const handleErr = $("reg-handle-err");
+          const handle = $("reg-handle").value.trim();
+          const email = $("reg-email").value.trim();
+          const pass = $("reg-pass").value;
+          errEl.textContent = ""; handleErr.textContent = "";
+          if (!/^[A-Za-z0-9_-]{3,24}$/.test(handle)) { handleErr.textContent = "No dots, spaces or symbols — only letters, numbers, _ or - (3–24 chars)."; $("reg-handle").focus(); return; }
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { errEl.textContent = "Please enter a valid email address."; $("reg-email").focus(); return; }
+          if (pass.length < 8) { errEl.textContent = "Password must be at least 8 characters."; $("reg-pass").focus(); return; }
+          try {
+            const d = await api("/api/register", { method: "POST",
+              body: JSON.stringify({ handle, email, password: pass, turnstile: tsToken() }) });
+            if (d.pending) {
+              $("register-form").classList.add("hidden");
+              const n = $("verify-notice");
+              n.querySelector(".verify-text").textContent = d.emailFailed
+                ? "Your account was created, but we couldn't send the verification email. Click below to try again."
+                : "Almost there! We've sent a confirmation link to " + email + ". Click it to activate your account, then sign in.";
+              n.dataset.handle = handle; n.dataset.email = email;
+              n.classList.remove("hidden");
+              tsReset();
+              return;
+            }
+            token = d.token; localStorage.setItem("hf_token", token); goNext();
+          } catch (err) { errEl.textContent = err.message; tsReset(); }
+        };
+
+        // ---- resend verification ----
+        $("verify-resend").onclick = async () => {
+          const n = $("verify-notice"); const btn = $("verify-resend");
+          btn.disabled = true; btn.textContent = "Sending…";
+          try { await api("/api/resend-verification", { method: "POST",
+            body: JSON.stringify({ handle: n.dataset.handle, email: n.dataset.email }) });
+            n.querySelector(".verify-text").textContent = "A new confirmation link is on its way. Check your inbox (and spam folder)."; }
+          catch {}
+          setTimeout(() => { btn.disabled = false; btn.textContent = "Resend email"; }, 4000);
+        };
+      })();
+    </script>
+  </body>
+</html>
