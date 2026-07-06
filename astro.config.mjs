@@ -46,6 +46,10 @@ export default defineConfig({
 					items: [
 						{ label: 'Menu', link: '/menu/' },
 						{ label: 'About', link: '/about/' },
+						// Hitting /session/sso makes Discourse start the SSO flow:
+						// it bounces to the Worker's /api/sso, which signs the user
+						// in (or sends them to /join/ first if not logged in).
+						{ label: 'Community', link: 'https://community.99humanityfund.com/session/sso' },
 					],
 				},
 				{
@@ -70,7 +74,11 @@ export default defineConfig({
 				},
 			],
 			components: {
-				// Custom component overrides will go here as we refine the design
+				// Adds a sign-in / account control on the right side of the
+				// header (see src/components/SocialIcons.astro). Uses the safe
+				// override pattern from Starlight's docs: wraps the default
+				// SocialIcons so search, theme toggle, and social links are kept.
+				SocialIcons: './src/components/SocialIcons.astro',
 			},
 		}),
 	],
