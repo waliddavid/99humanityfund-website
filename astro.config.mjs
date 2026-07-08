@@ -7,6 +7,18 @@ export default defineConfig({
 	site: 'https://99humanityfund.com',
 	integrations: [
 		starlight({
+			favicon: '/favicon.svg',
+			logo: {
+  				light: './src/assets/logo-light.svg',
+  				dark: './src/assets/logo-dark.svg',
+  				replacesTitle: true,
+				},
+			head: [
+  				{
+    			tag: 'link',
+    			attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+  				},
+			],
 			title: '99% of Humanity Global Fund',
 			description: 'A documentary essay on collective economic ownership in capitalist economies.',
 			customCss: [
