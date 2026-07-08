@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <style>
+    .ring99 { stroke: #6b5d3e; }
+    .ring1  { stroke: #c0392b; }
+    @media (prefers-color-scheme: dark) {
+      .ring99 { stroke: #c9b896; }
+      .ring1  { stroke: #e74c3c; }
+    }
+  </style>
+  <path class="ring99" fill="none" stroke-width="9"
+        d="M 27.933 57.680 A 26 26 0 1 1 36.067 57.680" />
+  <path class="ring1" fill="none" stroke-width="9"
+        d="M 36.067 57.680 A 26 26 0 0 1 27.933 57.680" />
+</svg>
