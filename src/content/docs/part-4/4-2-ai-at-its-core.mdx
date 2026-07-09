@@ -79,7 +79,7 @@ The detail below is for readers who want to see the architecture. None of it is 
 
 ## The mechanics, in more detail
 
--------------------------------------------------------------------------------- 
+--------------------------------------------------------------------------------
 [For readers who want the full architecture. The locked design, in brief.]
 
 **Two systems, separated on purpose.** The information AI (member-facing) and the watchdog (operations-facing) share access to the same underlying data but cannot influence each other's outputs. The separation is itself an anti-capture measure: no single compromised system can corrupt both what members are told and what operators are watched for, and each can help reveal a problem in the other.
