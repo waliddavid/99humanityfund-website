@@ -75,6 +75,18 @@ The case is structural rather than aspirational. Across seven parts, the series 
     color: #fff; background: rgba(0,0,0,0.55);
     border-radius: 999px; padding: 0.15rem 0.55rem;
   }
+.pcard-soon-card {
+    cursor: default;
+    opacity: 0.75;
+  }
+  .pcard-soon-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--sl-color-hairline-light);
+  }
+  .pcard-soon-card:hover .pcard-title {
+    color: var(--sl-color-white);
+  }
   .pcard-body { padding: 1rem 1.1rem 1.25rem; }
   .pcard-title {
     font-family: Georgia, 'Source Serif 4', serif;
@@ -204,15 +216,16 @@ The case is structural rather than aspirational. Across seven parts, the series 
     </div>
   </a>
 
-  <a class="pcard" href="https://community.99humanityfund.com/">
+  <div class="pcard pcard-soon-card">
     <div class="pcard-img" style="background-image: url('/cards/community.jpg')">
       <span class="pcard-num">Community</span>
+      <span class="pcard-soon">Coming Soon</span>
     </div>
     <div class="pcard-body">
       <p class="pcard-title">Join the Conversation</p>
-      <p class="pcard-desc">A space to discuss the proposal, ask questions, and help shape what comes next. Read freely, and sign in when you'd like to join in.</p>
+      <p class="pcard-desc">A space to discuss the proposal, ask questions, and help shape what comes next — opening once the series is complete.</p>
     </div>
-  </a>
+  </div>
 
 </div>
 </div>
