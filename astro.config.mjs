@@ -73,9 +73,9 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'The New World Order Series',
+					label: 'The 99% of Humanity Global Fund Series',
 					items: [
-						{ label: 'Part 1 — A New World Order', link: '/part-1/' },
+						{ label: 'Part 1 — The World Order', link: '/part-1/' },
 						{ label: 'Part 2 — The Fund Reveal', link: '/part-2/' },
 						{ label: 'Part 3 — The Benefits', link: '/part-3/' },
 						{ label: 'Part 4 — Governance', link: '/part-4/' },
