@@ -1,6 +1,6 @@
 ---
 title: About this project
-description: About the 99 Humanity Fund documentary project.
+description: About the 99% of Humanity Global Fund documentary project.
 ---
 
 ## What this is
